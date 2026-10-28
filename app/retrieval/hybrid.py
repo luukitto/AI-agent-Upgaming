@@ -58,6 +58,7 @@ class HybridRetriever:
         idx = BM25Index()
         for p in self.store.iter_all_chunks():
             idx.add(p["chunk_id"], p["doc_id"], f'{p.get("title", "")} {p["text"]}')
+        idx.compact()  # everything into the compact frozen segment
         self.bm25 = idx
         idx.save(cache_path)
         log.info("BM25 rebuilt: %d chunks in %.1fs", len(idx), time.time() - t)

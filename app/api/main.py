@@ -105,7 +105,7 @@ def health():
 def stats(c: Container = Depends(get_container)):
     s = c.settings
     return {"documents": c.store.count_documents(), "chunks": c.store.count_chunks(),
-            "bm25_terms": len(c.retriever.bm25.postings), "embed_model": c.embedder.model,
+            "bm25_terms": c.retriever.bm25.num_terms, "embed_model": c.embedder.model,
             "llm_model": s.llm_model, "fast_model": s.llm_fast_model, "chunk_strategy": s.chunk_strategy,
             "vector_db": "qdrant-cloud" if s.qdrant_url else "qdrant-local",
             "supported_formats": sorted(PARSERS)}

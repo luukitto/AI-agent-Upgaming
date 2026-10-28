@@ -76,6 +76,34 @@ def test_bm25_persistence(tmp_path):
     assert loaded.search("term")[0][0] == "b#0"
 
 
+def test_bm25_compaction_keeps_results():
+    texts = {f"d{i}#0": f"payment {'gateway ' * (i % 3)}pool {'timeout ' * (i % 5)}chunk {i}" for i in range(40)}
+    delta, frozen = BM25Index(), BM25Index()
+    for cid, text in texts.items():
+        delta.add(cid, cid.split("#")[0], text)
+        frozen.add(cid, cid.split("#")[0], text)
+    frozen.compact()
+    assert not frozen.delta and len(frozen.post_docs) > 0
+    for q in ("gateway timeout", "pool", "chunk 7"):
+        assert [c for c, _ in delta.search(q, k=10)] == [c for c, _ in frozen.search(q, k=10)]
+        assert [round(s, 9) for _, s in delta.search(q, k=10)] == [round(s, 9) for _, s in frozen.search(q, k=10)]
+
+
+def test_bm25_delete_and_readd_across_segments():
+    idx = BM25Index()
+    idx.add("a#0", "a", "ledger reconciliation failed")
+    idx.add("b#0", "b", "ledger export ok")
+    idx.compact()
+    idx.remove_doc("a")                       # tombstone in the frozen segment
+    assert [c for c, _ in idx.search("ledger")] == ["b#0"]
+    idx.add("a#0", "a", "reconciliation fixed")  # re-added into the delta segment
+    assert [c for c, _ in idx.search("reconciliation")] == ["a#0"]
+    idx.compact()                             # drops the dead slot and renumbers ids
+    assert len(idx) == 2 and len(idx.ext_ids) == 2 and not idx.dead
+    assert [c for c, _ in idx.search("reconciliation")] == ["a#0"]
+    assert idx.search("failed") == []          # old version's terms are gone
+
+
 def test_rrf():
     fused = reciprocal_rank_fusion({"dense": ["x", "y", "z"], "bm25": ["y", "w"]}, k=60)
     assert fused[0][0] == "y"
