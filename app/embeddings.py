@@ -50,7 +50,7 @@ class Embedder:
         # key goes in a header, not the URL, so it never shows up in logged request URLs
         self.http = httpx.Client(base_url=base_url, timeout=timeout, headers={"x-goog-api-key": api_key})
         self._min_interval = 60.0 / max_rpm if max_rpm > 0 else 0.0
-        self._last_call = 0.0
+        self._next_allowed = 0.0
         self._throttle_lock = Lock()
         self._query_cache: OrderedDict[str, np.ndarray] = OrderedDict()
         self._cache_size = cache_size
@@ -76,14 +76,15 @@ class Embedder:
                 self._query_cache.popitem(last=False)
         return vec
 
-    def _throttle(self) -> None:
+    def _throttle(self, n_texts: int) -> None:
+        """Free tier counts every text in a batch as one request, so the budget is texts per minute."""
         if not self._min_interval:
             return
         with self._throttle_lock:
-            wait = self._last_call + self._min_interval - time.monotonic()
+            wait = self._next_allowed - time.monotonic()
             if wait > 0:
                 time.sleep(wait)
-            self._last_call = time.monotonic()
+            self._next_allowed = time.monotonic() + n_texts * self._min_interval
 
     def _embed_batch(self, texts: list[str], task_type: str) -> np.ndarray:
         body = {"requests": [{"model": f"models/{self.model}", "content": {"parts": [{"text": t}]},
@@ -93,7 +94,7 @@ class Embedder:
                wait=wait_random_exponential(multiplier=2, max=60), reraise=True,
                before_sleep=before_sleep_log(log, logging.WARNING))
         def _do() -> dict:
-            self._throttle()
+            self._throttle(len(texts))
             resp = self.http.post(f"models/{self.model}:batchEmbedContents", json=body)
             resp.raise_for_status()
             return resp.json()

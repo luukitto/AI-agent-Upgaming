@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     embed_model: str = "gemini-embedding-001"
     embed_dim: int = 768               # Matryoshka-truncated from 3072
     embed_batch_size: int = 100        # API max per batch call
-    embed_max_rpm: int = 0             # client-side throttle; 0 = off (set it if you hit 429s)
+    embed_max_rpm: int = 0             # client-side throttle in texts/min; 0 = off (free tier: 100)
 
     # --- Chunking ---
     chunk_strategy: str = "sentence"  # "fixed" | "sentence"
