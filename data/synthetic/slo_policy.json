@@ -1,0 +1,26 @@
+{
+  "title": "NovaPay Service Level Objectives 2026",
+  "effective_from": "2026-01-01",
+  "services": [
+    {
+      "service": "payment-gateway",
+      "availability_target": "99.95%",
+      "latency_p99_ms": 800
+    },
+    {
+      "service": "ledger-service",
+      "availability_target": "99.9%",
+      "posting_delay_max_minutes": 15
+    },
+    {
+      "service": "fraud-scoring",
+      "availability_target": "99.95%",
+      "latency_p99_ms": 150
+    },
+    {
+      "service": "notification-service",
+      "availability_target": "99.5%",
+      "receipt_delay_max_minutes": 10
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+team,service,team_lead,slack_channel
+Falcon,payment-gateway,Nino Beridze,#team-falcon
+Atlas,ledger-service,Giorgi Lomidze,#team-atlas
+Sentinel,fraud-scoring,Ana Kapanadze,#team-sentinel
+Echo,notification-service,Levan Tsiklauri,#team-echo
+Keystone,auth-service,Tamar Gelashvili,#team-keystone

@@ -1,0 +1,18 @@
+<html><head><title>Q1 2026 Reliability Review - meeting notes</title></head><body>
+<h1>Q1 2026 Reliability Review</h1>
+<p>Meeting date: 2026-04-08. Attendees: Irakli Janelidze (Head of Engineering), Nino Beridze, Giorgi Lomidze, Ana Kapanadze.</p>
+<h2>March incidents</h2>
+<table>
+<tr><th>Incident</th><th>Summary</th><th>Root cause (as presented)</th><th>Duration</th></tr>
+<tr><td>INC-0312</td><td>Payment processing delays on 2026-03-05</td><td>TLS certificate rotation on fraud-scoring (CHG-2034)</td><td>2h 05m</td></tr>
+<tr><td>INC-0318</td><td>Ledger reconciliation failure on 2026-03-11</td><td>Migration 0047 (CHG-2040)</td><td>6h</td></tr>
+<tr><td>INC-0325</td><td>Elevated false declines on 2026-03-19</td><td>Fraud model v7.2 (CHG-2045)</td><td>2h 05m</td></tr>
+</table>
+<h2>Action items</h2>
+<ul>
+<li>Nino Beridze: add an alert on db_pool_wait_ms by 2026-04-30.</li>
+<li>Giorgi Lomidze: add schema-diff checks to the migration pipeline.</li>
+<li>Ana Kapanadze: shadow-test new fraud models for 48 hours before rollout.</li>
+</ul>
+<p>Total customer-facing incidents in Q1 2026: 3.</p>
+</body></html>

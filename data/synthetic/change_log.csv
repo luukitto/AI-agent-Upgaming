@@ -1,0 +1,9 @@
+change_id,date,service,description,author,risk
+CHG-2027,2026-02-24,auth-service,Upgrade JWT library to v5,Tamar Gelashvili,low
+CHG-2031,2026-03-03,payment-gateway,Reduce payments-db connection pool max size from 200 to 20 to lower database CPU load,Dato Mchedlidze,medium
+CHG-2034,2026-03-04,fraud-scoring,Rotate TLS certificates for the internal fraud-scoring endpoint,Ana Kapanadze,low
+CHG-2038,2026-03-09,notification-service,Switch SMS provider from TextLine to SendWave,Levan Tsiklauri,low
+CHG-2040,2026-03-10,ledger-service,Run migration 0047: convert ledger_entries to a partitioned table,Giorgi Lomidze,high
+CHG-2042,2026-03-12,payment-gateway,Set payments-db connection pool max size to 150 (permanent fix after INC-0312),Dato Mchedlidze,medium
+CHG-2045,2026-03-18,fraud-scoring,Deploy fraud model v7.2 with stricter decline thresholds,Ana Kapanadze,high
+CHG-2051,2026-04-02,ledger-service,Add index on ledger_entries.created_at,Giorgi Lomidze,low

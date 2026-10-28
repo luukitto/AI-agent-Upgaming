@@ -1,0 +1,26 @@
+Incident Report INC-0312: Payment processing delays
+
+Date: 2026-03-05
+Severity: SEV-1
+Status: Resolved
+Incident commander: Nino Beridze
+
+Summary
+Between 09:47 and 12:59 UTC on 2026-03-05 (duration 3 hours 12 minutes) payment processing was severely delayed. About 18,400 payments were delayed by more than 60 seconds and 312 payments failed and had to be retried by merchants.
+
+Root cause
+Change CHG-2031, deployed on 2026-03-03, reduced the payments-db connection pool of payment-gateway from 200 to 20 connections. Load was low on 2026-03-03 and 2026-03-04, so the problem stayed hidden. At the morning peak on 2026-03-05 request threads waited for database connections, requests queued and timed out.
+
+Impact
+payment-gateway: requests timed out or were delayed (primary impact).
+ledger-service: the ledger-events backlog reached 41,000 events and ledger postings were delayed by up to 2 hours.
+notification-service: payment receipts were sent late.
+fraud-scoring was not affected. The TLS certificate rotation CHG-2034 was investigated and ruled out because the new certificates were valid and fraud-scoring latency stayed normal.
+
+Mitigation
+At 12:40 UTC the pool size was raised to 120 by hand. The permanent fix CHG-2042 set the pool size to 150 on 2026-03-12.
+
+Contributing factors
+There was no alert on the db_pool_wait_ms metric. The change review for CHG-2031 did not include a load test.
+
+Exported from Confluence on 2026-03-20 by wiki-bot. Page version 4.
