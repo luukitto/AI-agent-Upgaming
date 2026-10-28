@@ -1,9 +1,3 @@
----
-title: AI Investigation Engine
-sdk: docker
-app_port: 7860
----
-
 # AI Investigation Engine
 
 An agentic RAG system that answers investigation questions across many documents. It retrieves evidence with
@@ -16,7 +10,7 @@ declines to answer when the evidence is missing.
 > architecture doc (MD). It answers **CHG-2031**, lists the three affected services, cites the chunks, and flags
 > that the Q1 review (HTML) names a *different* root cause.
 
-- **Live demo:** `<add Hugging Face Space URL>`
+- **Live demo:** `<add Render URL>`
 - **Evaluation report:** [EVAL_REPORT.md](EVAL_REPORT.md) · **AI usage report:** [AI_USAGE.md](AI_USAGE.md)
 
 ---
@@ -130,29 +124,33 @@ Evaluation: `python -m eval.make_questions`, then `python -m eval.run_eval retri
 ## 5. Deployment
 
 ```
-GitHub repo ──push──▶ Hugging Face Space (Docker, free CPU) ──HTTPS──▶ Qdrant Cloud (free 1 GB cluster)
-                          │  secrets: LLM_API_KEY, QDRANT_URL,               ▲
-                          │           QDRANT_API_KEY, ADMIN_TOKEN            │ one-time: run scripts.ingest_corpus
-                          └──HTTPS──▶ Gemini API                              │ locally with QDRANT_URL set
+GitHub repo ──auto-deploy──▶ Render web service (Docker, free) ──HTTPS──▶ Qdrant Cloud (free 1 GB cluster)
+                               │  env secrets: LLM_API_KEY, QDRANT_URL,          ▲
+                               │               QDRANT_API_KEY, ADMIN_TOKEN       │ one-time: scripts.ingest_corpus
+                               └──HTTPS──▶ Gemini API                             │ (or copy_to_cloud) from a laptop
 ```
 
 1. Create a free Qdrant Cloud cluster and copy its URL and API key.
 2. Put `QDRANT_URL`/`QDRANT_API_KEY` in your local `.env` and either run `python -m scripts.ingest_corpus` (embeds and writes straight to the cloud), or, if you already built the local index, run `python -m scripts.copy_to_cloud`, which copies the points with their vectors in a few minutes instead of re-embedding.
-3. Create a Hugging Face Space (SDK: Docker) and add the four values above as **Secrets**. Push this repo to the Space; the README front matter configures it.
+3. In Render: **New → Blueprint**, pick the GitHub repo. `render.yaml` defines a free Docker web service with a health
+   check on `/api/health`; enter `LLM_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY` and `ADMIN_TOKEN` when asked. Every push to
+   `main` redeploys.
+
+Hugging Face Spaces was the first choice, but Docker Spaces now need a paid PRO plan, so the app runs on Render.
 
 **Persistence.** Qdrant Cloud is the source of truth, so the container is stateless. On restart the BM25 index is
 rebuilt from Qdrant (a scroll over all chunks, roughly a minute for 65k), and uploaded documents survive restarts.
 
-**Secrets.** Keys come only from environment variables or Space secrets. `.env` is git-ignored, the embeddings key
+**Secrets.** Keys come only from environment variables (Render secret env vars in production). `.env` is git-ignored, the embeddings key
 is sent in a header (never in URLs or logs), and dataset documents can only be changed or deleted with `ADMIN_TOKEN`.
 
 **Free-tier limits and costs.**
 
 | Resource | Limit | Mitigation |
 |---|---|---|
-| HF Space (free CPU) | sleeps after ~48 h idle; cold start ≈ 1–2 min (BM25 rebuild) | documented; first request after sleep is slow |
+| Render free web service | 512 MB RAM, shared CPU; sleeps after 15 min idle, cold start ≈ 1–2 min (image start + BM25 rebuild) | compact BM25 (CSR arrays, ~60 MB instead of ~285 MB for 2.7M postings); whole app ≈ 400 MB; first request after sleep is slow |
 | Qdrant Cloud free | 1 GB RAM/disk | 65k × 384-d float32 ≈ 100 MB vectors + ~60 MB payload; vectors `on_disk` |
-| Gemini free tier | per-minute and per-day request caps | per-IP rate limit (10 questions/min), retries with backoff, LLM response cache, query-embedding cache |
+| Gemini free tier | per-minute and per-day request caps (`gemini-3.5-flash`: 20 requests/day, so the demo uses `gemini-3.5-flash-lite`) | per-IP rate limit (10 questions/min), retries with backoff, LLM response cache, query-embedding cache |
 | Embedding the corpus | ≈ 29 M characters, ~65k chunks | local model: $0, ≈ 1 h one-time on a laptop CPU; the model (~130 MB) is baked into the Docker image |
 | Cost per question | agentic: ~3–6 LLM calls, ~6–15k tokens; single-shot: 1 call | `agentic=false` toggle in UI/API; measured per config in EVAL_REPORT.md |
 
