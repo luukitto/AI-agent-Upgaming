@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # tried in order when a model is over its daily free quota or overloaded (each model has its own quota)
     llm_fallback_models: str = "gemini-3.5-flash-lite,gemini-3-flash-preview,gemma-4-31b-it,gemini-3.1-flash-lite"
     llm_timeout_s: float = 60.0
-    llm_max_retries: int = 4
+    llm_max_retries: int = 2           # per model; then the next fallback model is tried (keeps the UI responsive)
     llm_temperature: float = 0.1
 
     # --- Vector store (Qdrant). Empty URL -> embedded local mode on disk ---

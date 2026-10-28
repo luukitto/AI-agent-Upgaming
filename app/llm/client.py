@@ -131,7 +131,7 @@ class LLMClient:
 
     def _call_model(self, payload: dict) -> dict:
         @retry(retry=retry_if_exception(_retryable), stop=stop_after_attempt(self.max_retries + 1),
-               wait=wait_random_exponential(multiplier=2, max=40), reraise=True,
+               wait=wait_random_exponential(multiplier=2, max=15), reraise=True,
                before_sleep=before_sleep_log(log, logging.WARNING))
         def _do():
             return self.client.chat.completions.create(**payload)

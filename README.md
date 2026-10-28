@@ -10,7 +10,7 @@ declines to answer when the evidence is missing.
 > architecture doc (MD). It answers **CHG-2031**, lists the three affected services, cites the chunks, and flags
 > that the Q1 review (HTML) names a *different* root cause.
 
-- **Live demo:** `<add Render URL>`
+- **Live demo:** https://ai-agent-upgaming.onrender.com (free Render instance: the first request after 15 min idle takes 1–2 min to wake up)
 - **Evaluation report:** [EVAL_REPORT.md](EVAL_REPORT.md) · **AI usage report:** [AI_USAGE.md](AI_USAGE.md)
 
 ---
