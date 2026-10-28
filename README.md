@@ -146,13 +146,20 @@ is sent in a header (never in URLs or logs), and dataset documents can only be c
 
 **Free-tier limits and costs.**
 
+All infrastructure is free: Render free, Qdrant Cloud free and local embeddings ($0). The app is built for and was
+tested on the **Gemini free tier**, and nothing in the code depends on a paid tier. One deliberate exception: the
+Gemini project behind the live demo and the evaluation has **$5 of prepaid credit** (well under $1 used so far).
+This buys higher rate limits, so reviewers don't hit the free tier's daily caps, and the eval finished in one evening.
+Prepaid credit is a hard cap: at $0 the API answers 402 and nothing more is charged. To run the demo completely free,
+set `LLM_API_KEY` to a key from a Google project without billing; the model fallback chain is designed for that tier.
+
 | Resource | Limit | Mitigation |
 |---|---|---|
 | Render free web service | 512 MB RAM, shared CPU; sleeps after 15 min idle, cold start ≈ 1–2 min (image start + BM25 rebuild) | compact BM25 (CSR arrays, ~60 MB instead of ~285 MB for 2.7M postings); whole app ≈ 400 MB; first request after sleep is slow |
 | Qdrant Cloud free | 1 GB RAM/disk | 65k × 384-d float32 ≈ 100 MB vectors + ~60 MB payload; vectors `on_disk` |
-| Gemini free tier | per-minute and per-day request caps per model (`gemini-3.5-flash`: 20 requests/day, so the default is `gemini-3.5-flash-lite`); daily caps reset at midnight Pacific time | per-IP rate limit (10 questions/min), retries with backoff, fallback to the next free model (`LLM_FALLBACK_MODELS`; each model has its own quota), a separate API key/project for the demo, LLM response cache, query-embedding cache |
+| Gemini free tier | per-minute and per-day request caps per model (`gemini-3.5-flash`: 20 requests/day, so the default is `gemini-3.5-flash-lite`); daily caps reset at midnight Pacific time | per-IP rate limit (10 questions/min), retries with backoff, fallback to the next free model (`LLM_FALLBACK_MODELS`; each model has its own quota), $5 prepaid credit on the demo project for higher limits (see above), LLM response cache, query-embedding cache |
 | Embedding the corpus | ≈ 29 M characters, ~65k chunks | local model: $0, ≈ 1 h one-time on a laptop CPU; the model (~130 MB) is baked into the Docker image |
-| Cost per question | agentic: ~3–6 LLM calls, ~6–15k tokens; single-shot: 1 call | `agentic=false` toggle in UI/API; measured per config in EVAL_REPORT.md |
+| Cost per question | measured: single-shot 1 LLM call, ~1.8k tokens (≈ $0.001 at paid flash-lite prices); agentic ~2.4 calls, ~4k tokens on average, up to ~8 calls and ~14k tokens on hard questions (≈ $0.002–0.006) | `agentic=false` toggle in UI/API; details in EVAL_REPORT.md §4.3 |
 
 ## 6. Tests
 

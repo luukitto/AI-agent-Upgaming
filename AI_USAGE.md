@@ -45,10 +45,10 @@ No other AI assistants were used.
   free models as fallbacks, instead of paying for the larger model.
 - **API keys and billing.** My first key turned out to be an OpenRouter key with no credits; I replaced it with a
   Google AI Studio key. Keys live only in `.env` (git-ignored) and in Render's secret settings, never in the code or
-  the repository; I rotated a key after it was briefly exposed in my editor session. To finish the evaluation run I
-  added $5 of prepaid credit to my main project (the full eval costs well under $1). The public demo uses a key from
-  a **separate project without billing**, so it runs on the free tier as the brief requires and cannot be affected
-  by my other usage.
+  the repository; I rotated a key after it was briefly exposed in my editor session. I added $5 of prepaid credit
+  to my Gemini project to finish the evaluation in one evening and to give the live demo higher rate limits (well
+  under $1 used). The app itself was built and tested on the free tier; a key from a project without billing runs it
+  for free.
 - **Embeddings.** I first rejected the local model because it was too slow and moved to `gemini-embedding-001`. After
   measuring the free-tier quota (100 texts/min, so ~11 hours for the corpus, plus a daily cap), I went back to the
   local `bge-small-en-v1.5` with the speed fix. The Gemini embedder stays selectable with `EMBED_PROVIDER`.
