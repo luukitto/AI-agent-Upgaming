@@ -137,7 +137,7 @@ GitHub repo ──push──▶ Hugging Face Space (Docker, free CPU) ──HTTP
 ```
 
 1. Create a free Qdrant Cloud cluster and copy its URL and API key.
-2. Put `QDRANT_URL`/`QDRANT_API_KEY` in your local `.env` and run `python -m scripts.ingest_corpus`. This embeds once and writes straight to the cloud.
+2. Put `QDRANT_URL`/`QDRANT_API_KEY` in your local `.env` and either run `python -m scripts.ingest_corpus` (embeds and writes straight to the cloud), or, if you already built the local index, run `python -m scripts.copy_to_cloud`, which copies the points with their vectors in a few minutes instead of re-embedding.
 3. Create a Hugging Face Space (SDK: Docker) and add the four values above as **Secrets**. Push this repo to the Space; the README front matter configures it.
 
 **Persistence.** Qdrant Cloud is the source of truth, so the container is stateless. On restart the BM25 index is

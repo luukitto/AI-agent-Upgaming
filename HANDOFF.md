@@ -12,7 +12,7 @@ See README §4. Corpus files are git-ignored: run `python -m scripts.build_corpu
 
 ## Remaining (needs API key / accounts)
 1. `.env` with `LLM_API_KEY`. Embedding quota decision: enable billing (~$1 total) or wait several days on the free tier
-2. Qdrant Cloud cluster → set `QDRANT_URL`/`QDRANT_API_KEY` → `python -m scripts.ingest_corpus` (straight to the cloud)
+2. Qdrant Cloud cluster → set `QDRANT_URL`/`QDRANT_API_KEY` → `python -m scripts.copy_to_cloud` (copies the local index, no re-embedding)
 3. Smoke-test: `uvicorn app.api.main:app`, ask the NovaPay example question in the UI
 4. `python -m eval.run_eval retrieval`, `chunking`, `e2e` → fill in EVAL_REPORT §4 with the real numbers and analysis
 5. HF Space (Docker) + secrets → push → put the URL in README
