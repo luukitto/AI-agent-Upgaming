@@ -14,8 +14,10 @@ class Settings(BaseSettings):
     # --- LLM (any OpenAI-compatible endpoint; default = Google Gemini) ---
     llm_api_key: str = Field(default="", description="API key for the LLM provider")
     llm_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
-    llm_model: str = "gemini-3.5-flash"           # agent / answer generation
+    llm_model: str = "gemini-3.5-flash-lite"      # agent / answer generation (3.5-flash: only 20 free requests/day)
     llm_fast_model: str = "gemini-3.5-flash-lite"  # decomposition, judge
+    # tried in order when a model is over its daily free quota or overloaded (each model has its own quota)
+    llm_fallback_models: str = "gemini-3.5-flash-lite,gemini-3-flash-preview,gemma-4-31b-it,gemini-3.1-flash-lite"
     llm_timeout_s: float = 60.0
     llm_max_retries: int = 4
     llm_temperature: float = 0.1

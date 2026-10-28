@@ -163,3 +163,28 @@ def test_daily_quota_429_is_not_retried():
 
     assert not _retryable(rate_limit("Generate content requests per day limit exceeded on Free Tier"))
     assert _retryable(rate_limit("Requests per minute limit exceeded"))  # per-minute limits do recover
+
+
+def test_llm_falls_back_to_next_model_and_skips_exhausted_one():
+    from app.llm.client import LLMClient, LLMError, _ModelUnavailable
+
+    llm = LLMClient("test-key", "https://example.invalid/v1/", 5, 0, fallback_models=["a", "b"])
+    calls = []
+
+    def fake_call_model(payload):
+        calls.append(payload["model"])
+        if payload["model"] == "a":
+            raise _ModelUnavailable("daily quota used up", daily_quota=True)
+        return {"content": f"answer from {payload['model']}"}
+
+    llm._call_model = fake_call_model
+    assert llm._call({"model": "a"})["content"] == "answer from b"
+    assert llm._call({"model": "a"})["content"] == "answer from b"
+    assert calls == ["a", "b", "b"]  # "a" is skipped once its daily quota is known to be gone
+
+    def always_down(payload):
+        raise _ModelUnavailable("overloaded")
+
+    llm._call_model = always_down
+    with pytest.raises(LLMError, match="No LLM model available"):
+        llm._call({"model": "b"})

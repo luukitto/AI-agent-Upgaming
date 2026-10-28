@@ -28,6 +28,14 @@ class LLMError(RuntimeError):
     """Raised when the LLM call fails permanently (after retries) or is misconfigured."""
 
 
+class _ModelUnavailable(Exception):
+    """This model can't serve the request right now, but another model might (quota, overload, retired)."""
+
+    def __init__(self, message: str, daily_quota: bool = False):
+        super().__init__(message)
+        self.daily_quota = daily_quota
+
+
 def _daily_quota_exhausted(exc: BaseException) -> bool:
     """A per-day quota 429 only resets at midnight Pacific time, so retrying within seconds is pointless."""
     return isinstance(exc, openai.RateLimitError) and "per day" in str(exc.body).lower()
@@ -64,7 +72,7 @@ class Usage:
 
 class LLMClient:
     def __init__(self, api_key: str, base_url: str, timeout: float, max_retries: int,
-                 cache_dir: Path | None = None):
+                 cache_dir: Path | None = None, fallback_models: list[str] | None = None):
         if not api_key:
             raise LLMError("LLM_API_KEY is not set. Put it in .env (see .env.example).")
         # SDK-level retries disabled: tenacity below gives us backoff+jitter and logging
@@ -72,6 +80,8 @@ class LLMClient:
         self.max_retries = max_retries
         self.usage = Usage()
         self.cache_dir = cache_dir
+        self.fallback_models = fallback_models or []
+        self._exhausted_until: dict[str, float] = {}  # model -> time its daily quota is assumed still used up
         if cache_dir:
             cache_dir.mkdir(parents=True, exist_ok=True)
 
@@ -102,6 +112,24 @@ class LLMClient:
         return result
 
     def _call(self, payload: dict) -> dict:
+        """Try the requested model, then the fallbacks: each Gemini model has its own free-tier quota, so a model
+        whose daily quota is used up (skipped for an hour) or that is still overloaded after retries is replaced
+        by the next one instead of failing the user's question."""
+        models = [payload["model"], *[m for m in self.fallback_models if m != payload["model"]]]
+        errors = []
+        for model in models:
+            if self._exhausted_until.get(model, 0) > time.time():
+                continue
+            try:
+                return self._call_model({**payload, "model": model})
+            except _ModelUnavailable as e:
+                if e.daily_quota:
+                    self._exhausted_until[model] = time.time() + 3600
+                log.warning("LLM %s unavailable (%s); trying next fallback model", model, e)
+                errors.append(f"{model}: {e}")
+        raise LLMError("No LLM model available: " + "; ".join(errors or ["all models over their daily quota"]))
+
+    def _call_model(self, payload: dict) -> dict:
         @retry(retry=retry_if_exception(_retryable), stop=stop_after_attempt(self.max_retries + 1),
                wait=wait_random_exponential(multiplier=2, max=40), reraise=True,
                before_sleep=before_sleep_log(log, logging.WARNING))
@@ -117,9 +145,15 @@ class LLMClient:
             raise LLMError(f"LLM rejected the request: {str(e.body or e.message)[:400]}") from e
         except openai.RateLimitError as e:
             if _daily_quota_exhausted(e):
-                raise LLMError(f"Daily request quota for {payload['model']} is used up (free tier); it resets at "
-                               "midnight Pacific time. Set LLM_MODEL to another model or enable billing.") from e
-            raise LLMError(f"LLM rate limit still exceeded after retries: {e}") from e
+                raise _ModelUnavailable("daily free-tier quota used up (resets at midnight Pacific time)",
+                                        daily_quota=True) from e
+            raise _ModelUnavailable(f"rate limit still exceeded after retries: {e}") from e
+        except (openai.InternalServerError, openai.APITimeoutError, openai.APIConnectionError) as e:
+            raise _ModelUnavailable(f"overloaded or unreachable after retries: {e}") from e
+        except openai.APIStatusError as e:
+            if e.status_code == 404:  # model retired or not enabled for this key
+                raise _ModelUnavailable("model not found for this API key") from e
+            raise LLMError(f"LLM call failed: {e}") from e
         except Exception as e:
             raise LLMError(f"LLM call failed after retries: {e}") from e
         self.usage.add(resp.usage)
@@ -164,4 +198,5 @@ def parse_json_loose(text: str) -> Any:
 def get_llm() -> LLMClient:
     s = get_settings()
     return LLMClient(s.llm_api_key, s.llm_base_url, s.llm_timeout_s, s.llm_max_retries,
-                     cache_dir=ROOT_DIR / "data" / "llm_cache")
+                     cache_dir=ROOT_DIR / "data" / "llm_cache",
+                     fallback_models=[m.strip() for m in s.llm_fallback_models.split(",") if m.strip()])

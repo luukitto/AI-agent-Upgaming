@@ -46,7 +46,7 @@ declines to answer when the evidence is missing.
 | Keyword search | `app/retrieval/bm25.py` | **own** Okapi BM25 with an incremental inverted index (add/remove per chunk) |
 | Fusion / re-rank | `app/retrieval/fusion.py` | **own** Reciprocal Rank Fusion + Maximal Marginal Relevance |
 | Agent | `app/agent/` | tool calling, decomposition, citation verification, injection flagging |
-| LLM | `app/llm/client.py` | any OpenAI-compatible endpoint; tenacity retries on 429/5xx/timeouts, token accounting, response cache |
+| LLM | `app/llm/client.py` | any OpenAI-compatible endpoint; retries with backoff on 429/5xx/timeouts, **model fallback chain** when a model is over its daily quota or overloaded, token accounting, response cache |
 | Eval | `eval/` | 60 questions, retrieval + end-to-end + chunking comparisons |
 
 ### RAG pipeline, step by step
@@ -102,7 +102,7 @@ python -m scripts.build_corpus                           # download + build corp
 python -m scripts.ingest_corpus --limit 2000             # smoke index (fast)
 python -m scripts.ingest_corpus                          # full index (~65k chunks)
 uvicorn app.api.main:app --reload                        # http://localhost:8000
-pytest -q                                                # 37 tests, no API key needed
+pytest -q                                                # 41 tests, no API key needed
 ```
 
 Evaluation: `python -m eval.make_questions`, then `python -m eval.run_eval retrieval|e2e|chunking` (see EVAL_REPORT.md).
@@ -150,16 +150,16 @@ is sent in a header (never in URLs or logs), and dataset documents can only be c
 |---|---|---|
 | Render free web service | 512 MB RAM, shared CPU; sleeps after 15 min idle, cold start ≈ 1–2 min (image start + BM25 rebuild) | compact BM25 (CSR arrays, ~60 MB instead of ~285 MB for 2.7M postings); whole app ≈ 400 MB; first request after sleep is slow |
 | Qdrant Cloud free | 1 GB RAM/disk | 65k × 384-d float32 ≈ 100 MB vectors + ~60 MB payload; vectors `on_disk` |
-| Gemini free tier | per-minute and per-day request caps (`gemini-3.5-flash`: 20 requests/day, so the demo uses `gemini-3.5-flash-lite`) | per-IP rate limit (10 questions/min), retries with backoff, LLM response cache, query-embedding cache |
+| Gemini free tier | per-minute and per-day request caps per model (`gemini-3.5-flash`: 20 requests/day, so the default is `gemini-3.5-flash-lite`); daily caps reset at midnight Pacific time | per-IP rate limit (10 questions/min), retries with backoff, fallback to the next free model (`LLM_FALLBACK_MODELS`; each model has its own quota), a separate API key/project for the demo, LLM response cache, query-embedding cache |
 | Embedding the corpus | ≈ 29 M characters, ~65k chunks | local model: $0, ≈ 1 h one-time on a laptop CPU; the model (~130 MB) is baked into the Docker image |
 | Cost per question | agentic: ~3–6 LLM calls, ~6–15k tokens; single-shot: 1 call | `agentic=false` toggle in UI/API; measured per config in EVAL_REPORT.md |
 
 ## 6. Tests
 
-`pytest -q` runs 37 tests offline. They use an in-memory Qdrant, a hashing embedder and a scripted LLM, so the
+`pytest -q` runs 41 tests offline. They use an in-memory Qdrant, a hashing embedder and a scripted LLM, so the
 real chunkers, dedup, BM25, RRF, MMR, agent loop, citation checks, API routes and eval metrics run without network
 access. They cover parsers for all 7 formats, CRUD and versioning, exact and near duplicates, fabricated-citation
-detection, the step limit, LLM failure handling, tool argument errors, injection flagging, admin protection and SSE.
+detection, the step limit, LLM failure handling (no retries on a used-up daily quota, model fallback), compact BM25 compaction, tool argument errors, injection flagging, admin protection and SSE.
 
 ## 7. Project layout
 
