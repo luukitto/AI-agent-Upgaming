@@ -1,4 +1,10 @@
-"""Embedding client for the Gemini embeddings API (gemini-embedding-001).
+"""Embedding providers (EMBED_PROVIDER): "local" (default) or "gemini".
+
+LocalEmbedder: BAAI/bge-small-en-v1.5 (384-d) via fastembed/ONNX on CPU. No quota and no cost; it was chosen
+because the Gemini free tier caps embedding requests per day (each text counts), far below the ~65k corpus chunks.
+Queries get the BGE retrieval instruction prefix (fastembed `query_embed`), documents don't: asymmetric like Gemini.
+
+Embedder (Gemini, gemini-embedding-001):
 
 Uses the native `batchEmbedContents` endpoint (up to 100 texts per call) because it supports
 task types: documents are embedded as RETRIEVAL_DOCUMENT and queries as RETRIEVAL_QUERY, which
@@ -116,8 +122,39 @@ class Embedder:
         return vecs / np.maximum(norms, 1e-12)
 
 
+class LocalEmbedder:
+    def __init__(self, model: str, cache_dir: str | None = None, batch_size: int = 32):
+        from fastembed import TextEmbedding
+
+        self.model = model
+        self.batch_size = batch_size
+        self._m = TextEmbedding(model, cache_dir=cache_dir)
+        self.dim = len(next(iter(self._m.embed(["probe"]))))
+        self._lock = Lock()  # ONNX session is thread-safe, but serialising keeps CPU use predictable
+        self.embed_query = lru_cache(maxsize=2048)(self._embed_query)
+
+    def embed_documents(self, texts: list[str]) -> np.ndarray:
+        if not texts:
+            return np.zeros((0, self.dim), dtype=np.float32)
+        # batches are padded to their longest text: sorting by length is ~2.5x faster on CPU
+        order = sorted(range(len(texts)), key=lambda i: len(texts[i]))
+        with self._lock:
+            vecs = list(self._m.embed([texts[i] for i in order], batch_size=self.batch_size))
+        out = np.empty((len(texts), self.dim), dtype=np.float32)
+        out[order] = np.asarray(vecs, dtype=np.float32)
+        return out
+
+    def _embed_query(self, text: str) -> np.ndarray:
+        with self._lock:
+            return np.asarray(next(iter(self._m.query_embed(text))), dtype=np.float32)
+
+
 @lru_cache
-def get_embedder() -> Embedder:
+def get_embedder() -> Embedder | LocalEmbedder:
     s = get_settings()
-    return Embedder(s.embed_api_key or s.llm_api_key, s.embed_model, s.embed_dim, s.embed_base_url,
-                    s.embed_batch_size, s.embed_max_rpm)
+    if s.embed_provider == "local":
+        return LocalEmbedder(s.local_embed_model, s.embed_cache_dir)
+    if s.embed_provider == "gemini":
+        return Embedder(s.embed_api_key or s.llm_api_key, s.embed_model, s.embed_dim, s.embed_base_url,
+                        s.embed_batch_size, s.embed_max_rpm)
+    raise EmbeddingError(f"Unknown EMBED_PROVIDER {s.embed_provider!r} (use 'local' or 'gemini')")

@@ -37,6 +37,11 @@ class VectorStore:
     # ---------- setup ----------
     def _ensure_collections(self) -> None:
         existing = {c.name for c in self.client.get_collections().collections}
+        if self.chunks in existing:
+            size = self.client.get_collection(self.chunks).config.params.vectors.size
+            if size != self.dim:
+                raise RuntimeError(f"Collection '{self.chunks}' has {size}-d vectors but the embedder makes "
+                                   f"{self.dim}-d ones. Use another CHUNKS_COLLECTION or the matching EMBED_PROVIDER.")
         if self.chunks not in existing:
             self.client.create_collection(
                 self.chunks,
@@ -189,5 +194,6 @@ def make_client() -> QdrantClient:
 
 @lru_cache
 def get_store() -> VectorStore:
+    from app.embeddings import get_embedder
     s = get_settings()
-    return VectorStore(make_client(), s.chunks_collection, s.documents_collection, s.embed_dim)
+    return VectorStore(make_client(), s.chunks_collection, s.documents_collection, get_embedder().dim)

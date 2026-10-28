@@ -27,7 +27,11 @@ class Settings(BaseSettings):
     chunks_collection: str = "chunks"
     documents_collection: str = "documents"
 
-    # --- Embeddings (Gemini embeddings API; key defaults to llm_api_key) ---
+    # --- Embeddings: "local" (fastembed, no quota) or "gemini" (API; key defaults to llm_api_key) ---
+    # changing provider/model changes the vector size -> use a fresh CHUNKS_COLLECTION and re-ingest
+    embed_provider: str = "local"
+    local_embed_model: str = "BAAI/bge-small-en-v1.5"
+    embed_cache_dir: str = str(ROOT_DIR / "data" / "models")
     embed_api_key: str = ""
     embed_base_url: str = "https://generativelanguage.googleapis.com/v1beta/"
     embed_model: str = "gemini-embedding-001"

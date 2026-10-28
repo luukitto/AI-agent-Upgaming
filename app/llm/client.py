@@ -107,7 +107,7 @@ class LLMClient:
         except openai.AuthenticationError as e:
             raise LLMError("LLM authentication failed - check LLM_API_KEY") from e
         except openai.BadRequestError as e:
-            raise LLMError(f"LLM rejected the request: {e.message}") from e
+            raise LLMError(f"LLM rejected the request: {str(e.body or e.message)[:400]}") from e
         except Exception as e:
             raise LLMError(f"LLM call failed after retries: {e}") from e
         self.usage.add(resp.usage)
@@ -121,7 +121,9 @@ class LLMClient:
             "usage": {"prompt_tokens": getattr(resp.usage, "prompt_tokens", 0) or 0,
                       "completion_tokens": getattr(resp.usage, "completion_tokens", 0) or 0},
             "tool_calls": [
-                {"id": tc.id, "name": tc.function.name, "arguments": tc.function.arguments or "{}"}
+                # extra_content carries Gemini's thought_signature, which must be echoed back next turn
+                {"id": tc.id, "name": tc.function.name, "arguments": tc.function.arguments or "{}",
+                 **({"extra_content": tc.model_extra["extra_content"]} if (tc.model_extra or {}).get("extra_content") else {})}
                 for tc in (msg.tool_calls or [])
             ],
         }

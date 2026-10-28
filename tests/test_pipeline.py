@@ -152,3 +152,13 @@ def test_api_ask_and_stream(client, novapay):
     text = client.post("/api/ask/stream", json={"question": "Who won the 2030 World Cup?"}).text
     assert "event: search" in text and "event: answer" in text
     assert client.post("/api/search", json={"query": ""}).status_code == 422
+
+
+def test_thought_signature_is_echoed_back(novapay):
+    # Gemini 3 rejects a follow-up turn whose tool call lacks the original thought_signature
+    sig = {"google": {"thought_signature": "abc"}}
+    first = tool_call("search_documents", {"query": "pool"})
+    first["tool_calls"][0]["extra_content"] = sig
+    run(novapay, [first, tool_call("submit_answer", {"status": "insufficient_evidence", "answer": "-", "citations": []})])
+    assistant = [m for m in novapay.llm.requests[1]["messages"] if m["role"] == "assistant"][0]
+    assert assistant["tool_calls"][0]["extra_content"] == sig

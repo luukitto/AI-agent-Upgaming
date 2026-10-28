@@ -220,10 +220,8 @@ def run_chunking(args) -> None:
     from app.models import ParsedDocument
     from app.retrieval.hybrid import HybridRetriever
     from app.store.vector_store import VectorStore
-    from app.config import get_settings
     from scripts.ingest_corpus import postmortem_docs
 
-    s = get_settings()
     questions = load_questions(args.limit)
     gold = {d for q in questions for g in q["gold"] for d in g if d.startswith("hotpot:")}
     # hotpot_paragraphs.jsonl is written in question order, so its head holds the context paragraphs
@@ -239,7 +237,7 @@ def run_chunking(args) -> None:
     embedder = get_embedder()
     per_q = []
     for strategy in ("fixed", "sentence"):
-        store = VectorStore(QdrantClient(":memory:"), "chunks", "documents", s.embed_dim)
+        store = VectorStore(QdrantClient(":memory:"), "chunks", "documents", embedder.dim)
         retriever = HybridRetriever(store, embedder)
         ing = IngestionService(store, embedder, retriever, get_chunker(strategy, args.chunk_size, args.chunk_overlap))
         for p in sorted((ROOT_DIR / "data" / "synthetic").iterdir()):

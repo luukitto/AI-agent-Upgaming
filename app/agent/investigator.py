@@ -197,5 +197,6 @@ class Investigator:
 def _assistant_msg(resp: dict) -> dict:
     return {"role": "assistant", "content": resp["content"] or None,
             "tool_calls": [{"id": tc["id"], "type": "function",
-                            "function": {"name": tc["name"], "arguments": tc["arguments"]}}
+                            "function": {"name": tc["name"], "arguments": tc["arguments"]},
+                            **({"extra_content": tc["extra_content"]} if tc.get("extra_content") else {})}
                            for tc in resp["tool_calls"]]}

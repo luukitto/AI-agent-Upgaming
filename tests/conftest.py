@@ -32,6 +32,7 @@ SYNTHETIC = Path(__file__).resolve().parent.parent / "data" / "synthetic"
 class FakeEmbedder:
     """Bag-of-words feature hashing -> unit vector. Similar wording => similar vectors."""
     dim = DIM
+    model = "fake-hashing"
 
     def _vec(self, text: str) -> np.ndarray:
         v = np.zeros(DIM, dtype=np.float32)
