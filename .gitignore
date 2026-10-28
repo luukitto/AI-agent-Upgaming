@@ -16,3 +16,5 @@ data/corpus/hotpot_*.jsonl
 data/qdrant/
 data/bm25.pkl
 data/llm_cache/
+data/models/
+eval/results/*.progress.jsonl
