@@ -37,10 +37,12 @@ class HybridRetriever:
         self.embedder = embedder
         self.bm25 = bm25 or BM25Index()
         self.lock = RLock()
+        self.cache_path: str | None = None  # set by load_or_build_bm25; None = in-memory only (tests, eval)
 
     # ---------- keyword index lifecycle ----------
     def load_or_build_bm25(self, cache_path: str) -> None:
         """Load the BM25 pickle if it matches the store; otherwise rebuild from Qdrant (source of truth)."""
+        self.cache_path = cache_path
         n_store = self.store.count_chunks()
         if Path(cache_path).exists():
             try:
@@ -117,8 +119,9 @@ class HybridRetriever:
             self.bm25.remove_doc(doc_id)
 
     def persist(self) -> None:
-        with self.lock:
-            self.bm25.save(get_settings().bm25_cache_path)
+        if self.cache_path:
+            with self.lock:
+                self.bm25.save(self.cache_path)
 
 
 def default_config() -> RetrievalConfig:
