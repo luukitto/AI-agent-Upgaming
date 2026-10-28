@@ -28,7 +28,14 @@ class LLMError(RuntimeError):
     """Raised when the LLM call fails permanently (after retries) or is misconfigured."""
 
 
+def _daily_quota_exhausted(exc: BaseException) -> bool:
+    """A per-day quota 429 only resets at midnight Pacific time, so retrying within seconds is pointless."""
+    return isinstance(exc, openai.RateLimitError) and "per day" in str(exc.body).lower()
+
+
 def _retryable(exc: BaseException) -> bool:
+    if _daily_quota_exhausted(exc):
+        return False
     if isinstance(exc, (openai.RateLimitError, openai.APITimeoutError, openai.APIConnectionError,
                         openai.InternalServerError)):
         return True
@@ -108,6 +115,11 @@ class LLMClient:
             raise LLMError("LLM authentication failed - check LLM_API_KEY") from e
         except openai.BadRequestError as e:
             raise LLMError(f"LLM rejected the request: {str(e.body or e.message)[:400]}") from e
+        except openai.RateLimitError as e:
+            if _daily_quota_exhausted(e):
+                raise LLMError(f"Daily request quota for {payload['model']} is used up (free tier); it resets at "
+                               "midnight Pacific time. Set LLM_MODEL to another model or enable billing.") from e
+            raise LLMError(f"LLM rate limit still exceeded after retries: {e}") from e
         except Exception as e:
             raise LLMError(f"LLM call failed after retries: {e}") from e
         self.usage.add(resp.usage)

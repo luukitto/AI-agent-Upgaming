@@ -150,3 +150,16 @@ def test_parse_json_loose():
     assert parse_json_loose('Sure! {"a": [1]} hope it helps') == {"a": [1]}
     with pytest.raises(ValueError):
         parse_json_loose("no json here")
+
+
+def test_daily_quota_429_is_not_retried():
+    import httpx
+    import openai
+    from app.llm.client import _retryable
+
+    def rate_limit(message: str) -> openai.RateLimitError:
+        resp = httpx.Response(429, request=httpx.Request("POST", "https://example.invalid"))
+        return openai.RateLimitError("Error code: 429", response=resp, body={"error": {"message": message}})
+
+    assert not _retryable(rate_limit("Generate content requests per day limit exceeded on Free Tier"))
+    assert _retryable(rate_limit("Requests per minute limit exceeded"))  # per-minute limits do recover
