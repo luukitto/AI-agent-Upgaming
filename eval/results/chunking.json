@@ -1,0 +1,2108 @@
+[
+ {
+  "config": "fixed-400",
+  "id": "np-01",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 37,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:q1_reliability_review.html"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-02",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 25,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-03",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 31,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:change_log.csv",
+   "novapay:q1_reliability_review.html",
+   "postmortems:https_github.blog_news-insights_company-news_github-availability-report-may-2021",
+   "postmortems:https_web.archive.org_web_20180830181639_https_paritytech.io_the-multi-sig-hack-a-postmortem",
+   "postmortems:https_status.heroku.com_incidents_2558",
+   "postmortems:https_github.blog_2021-12-01-github-availability-report-november-2021"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-04",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 43,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:architecture.md",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:q1_reliability_review.html"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-05",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 25,
+  "docs": [
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:q1_reliability_review.html",
+   "novapay:acquira_status_history.md"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-06",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 26,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:change_log.csv",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0312_confluence_export.txt",
+   "postmortems:https_aws.amazon.com_message_74876-2",
+   "postmortems:https_www.crowdstrike.com_falcon-content-update-remediation-and-guidance-hub"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-07",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 0.0,
+  "R@5": 0.0,
+  "R@10": 1.0,
+  "MRR": 0.14285714285714285,
+  "latency_ms": 25,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:acquira_status_history.md",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:architecture.md",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:slo_policy.json"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-08",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 21,
+  "docs": [
+   "novapay:team_directory.csv",
+   "hotpot:Sommeren_92",
+   "hotpot:2010_11_VCU_Rams_men_s_basketball_team",
+   "hotpot:2015_16_VCU_Rams_men_s_basketball_team",
+   "hotpot:2007_Memorial_Cup",
+   "hotpot:Alex_Ferguson",
+   "hotpot:Lead_programmer",
+   "hotpot:Matt_Busby"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-09",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 26,
+  "docs": [
+   "novapay:architecture.md",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-10",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 23,
+  "docs": [
+   "novapay:change_log.csv",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_help.salesforce.com_s_articleView_id_000396429_type_1",
+   "novapay:INC-0312_confluence_export.txt"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-11",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 35,
+  "docs": [
+   "postmortems:https_github.blog_2022-03-23-an-update-on-recent-service-disruptions",
+   "novapay:oncall_handbook.txt",
+   "postmortems:https_incident.io_blog_database-performance",
+   "postmortems:https_incident.io_blog_clouds-caches-and-connection-conundrums",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-12",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 0.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.25,
+  "latency_ms": 41,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:slo_policy.json",
+   "novapay:architecture.md",
+   "novapay:change_log.csv",
+   "novapay:q1_reliability_review.html",
+   "postmortems:https_web.archive.org_web_20170202055452_https_www.businessinsider.com.au_a-fire-in-a-telstra-exchange-is-causing-flight-delays-and-network-outages-20"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-13",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 42,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-14",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 37,
+  "docs": [
+   "novapay:team_directory.csv",
+   "novapay:change_log.csv",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:slo_policy.json",
+   "novapay:INC-0312_confluence_export.txt"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-15",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 32,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "postmortems:https_slack.engineering_slacks-incident-on-2-22-22",
+   "postmortems:https_slack.engineering_slacks-outage-on-january-4th-2021",
+   "novapay:team_directory.csv",
+   "novapay:architecture.md",
+   "postmortems:https_web.archive.org_web_20181208123409_https_slackhq.com_this-was-not-normal-really",
+   "postmortems:https_status.incident.io_incidents_01JRDFKAGE07YYDY0KZR137BX3_write-up"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-16",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 28,
+  "docs": [
+   "novapay:INC-0325_false_declines.md",
+   "novapay:q1_reliability_review.html",
+   "postmortems:https_help.salesforce.com_s_articleView_id_000396429_type_1",
+   "postmortems:https_status.cloud.google.com_incidents_mREMLwZFe3FuLLn3zfTw",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_discuss.circleci.com_t_post-incident-report-april-4-2025-circleci-ui-loading-build-triggering-issues_53208"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-17",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 31,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-18",
+  "category": "multi_hop",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 39,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:change_log.csv",
+   "postmortems:https_www.atlassian.com_engineering_post-incident-review-april-2022-outage"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-19",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 31,
+  "docs": [
+   "novapay:change_log.csv",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_incident.io_blog_clouds-caches-and-connection-conundrums"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-20",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 44,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-21",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 35,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:acquira_status_history.md",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:oncall_handbook.txt",
+   "postmortems:https_web.archive.org_web_20211201033341_https_codeascraft.com_2012_01_23_solr-bittorrent-index-replication"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-22",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 25,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:architecture.md",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:slo_policy.json"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-23",
+  "category": "multi_hop",
+  "R@1": 0.0,
+  "R@3": 0.6666666666666666,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 32,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:change_log.csv",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:oncall_handbook.txt"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-24",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 36,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:oncall_handbook.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "postmortems:https_incident.io_blog_intermittent-downtime"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-25",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 35,
+  "docs": [
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_confluence_export.txt",
+   "hotpot:Robert_Nyce"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-26",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 38,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:q1_reliability_review.html",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-27",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 24,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-28",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 29,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-29",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 30,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-36",
+  "category": "injection",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.3333333333333333,
+  "latency_ms": 26,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:slo_policy.json",
+   "novapay:q1_reliability_review.html",
+   "novapay:architecture.md",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "np-37",
+  "category": "injection",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 29,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "pm-01",
+  "category": "postmortem",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 45,
+  "docs": [
+   "postmortems:https_blog.cloudflare.com_18-november-2025-outage",
+   "novapay:INC-0312_confluence_export.txt",
+   "postmortems:https_www.fastly.com_blog_summary-of-june-8-outage",
+   "postmortems:https_status.incident.io_incidents_01JRDFKAGE07YYDY0KZR137BX3_write-up",
+   "postmortems:https_status.heroku.com_incidents_2558",
+   "postmortems:https_www.datadoghq.com_blog_2023-03-08-multiregion-infrastructure-connectivity-issue",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_www.bbc.co.uk_blogs_internet_entries_a37b0470-47d4-3991-82bb-a7d5b8803771",
+   "postmortems:https_incident.io_blog_database-performance"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "pm-02",
+  "category": "postmortem",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 36,
+  "docs": [
+   "postmortems:https_web.archive.org_web_20211006135542_https_blog.cloudflare.com_todays-outage-post-mortem-82515",
+   "postmortems:https_web.archive.org_web_20211029020126_https_blog.cloudflare.com_incident-report-on-memory-leak-caused-by-cloudflare-parser-bug",
+   "postmortems:https_blog.cloudflare.com_route-leak-incident-january-22-2026",
+   "postmortems:https_blog.cloudflare.com_major-data-center-power-failure-again-cloudflare-code-orange-tested",
+   "postmortems:https_web.archive.org_web_20211016040522_https_blog.cloudflare.com_cloudflare-outage-on-july-17-2020",
+   "postmortems:https_blog.cloudflare.com_post-mortem-on-cloudflare-control-plane-and-analytics-outage",
+   "postmortems:https_blog.cloudflare.com_cloudflare-outage-february-20-2026",
+   "postmortems:https_blog.cloudflare.com_18-november-2025-outage",
+   "postmortems:https_web.archive.org_web_20211015231917_https_blog.cloudflare.com_a-byzantine-failure-in-the-real-world",
+   "postmortems:https_web.archive.org_web_20220621124002_https_blog.cloudflare.com_cloudflare-outage-on-june-21-2022"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "pm-03",
+  "category": "postmortem",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 23,
+  "docs": [
+   "postmortems:https_allegro.tech_2018_08_postmortem-why-allegro-went-down.html",
+   "postmortems:https_allegro.tech_2015_01_allegro-cast-post-mortem.html",
+   "postmortems:https_github.blog_news-insights_company-news_github-availability-report-october-2024",
+   "postmortems:https_blog.etsy.com_news_2012_demystifying-site-outages",
+   "postmortems:https_github.blog_news-insights_the-library_downtime-last-saturday",
+   "postmortems:https_aws.amazon.com_message_5467D2",
+   "postmortems:https_status.cloud.google.com_incidents_eo76pxZiDgWVz4z3kmUv",
+   "postmortems:https_github.blog_news-insights_the-library_network-problems-last-friday"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-01",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 24,
+  "docs": [
+   "hotpot:Ed_Wood",
+   "hotpot:Ed_Wood_film",
+   "hotpot:Scott_Derrickson",
+   "hotpot:Woodson_Arkansas",
+   "hotpot:Conrad_Brooks",
+   "hotpot:Sinister_film",
+   "hotpot:Deliver_Us_from_Evil_2014_film",
+   "hotpot:Adam_Collis"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-02",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 27,
+  "docs": [
+   "hotpot:Kiss_and_Tell_1945_film",
+   "hotpot:A_Kiss_for_Corliss",
+   "hotpot:Secretary_of_State_for_Constitutional_Affairs",
+   "hotpot:Meet_Corliss_Archer",
+   "hotpot:Janet_Waldo",
+   "hotpot:Meet_Corliss_Archer_TV_series",
+   "hotpot:City_of_Angels_film",
+   "hotpot:True_Lies"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-03",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 39,
+  "docs": [
+   "hotpot:Animorphs",
+   "hotpot:Victoria_Hanley",
+   "hotpot:Andre_Norton_Award",
+   "hotpot:Etiquette_amp_Espionage",
+   "hotpot:Science_Fantasy_magazine",
+   "hotpot:The_Divide_trilogy",
+   "hotpot:The_Hork-Bajir_Chronicles",
+   "hotpot:Shadowshaper"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-04",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 29,
+  "docs": [
+   "hotpot:Esma_Sultan_Mansion",
+   "hotpot:Laleli_Mosque",
+   "hotpot:Esma_Sultan_daughter_of_Ahmed_III",
+   "hotpot:Esma_Sultan",
+   "hotpot:Sultan_Ahmed_Mosque",
+   "hotpot:Esma_Sultan_daughter_of_Abdul_Hamid_I",
+   "hotpot:Esma_Sultan_daughter_of_Abd_laziz",
+   "hotpot:Djama_el_Kebir",
+   "hotpot:Gevheri_Kad_n"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-05",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 41,
+  "docs": [
+   "hotpot:Big_Stone_Gap_film",
+   "hotpot:Nola_film",
+   "hotpot:I_Love_NY_2015_film",
+   "hotpot:Clinton_Minnesota",
+   "hotpot:Kingston_Morning",
+   "hotpot:It_Could_Happen_to_You_1994_film",
+   "hotpot:Adriana_Trigiani",
+   "hotpot:City_of_Angels_film"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-06",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 31,
+  "docs": [
+   "hotpot:2014_S_S",
+   "hotpot:SF9_band",
+   "hotpot:Winner_band",
+   "hotpot:Madtown",
+   "hotpot:History_band",
+   "hotpot:Seventeen_discography",
+   "hotpot:BTS_discography",
+   "hotpot:Cho_Kyuhyun",
+   "hotpot:List_of_awards_and_nominations_received_by_Shinee",
+   "hotpot:List_of_songs_written_by_Ravi"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-07",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 34,
+  "docs": [
+   "hotpot:Eenasul_Fateh",
+   "hotpot:Management_consulting",
+   "hotpot:Method_Man",
+   "hotpot:ELDee",
+   "hotpot:Criss_Angel",
+   "hotpot:Mick_DJ",
+   "hotpot:James_P._Comer",
+   "hotpot:World_Summit_of_Nobel_Peace_Laureates"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-08",
+  "category": "hotpot_bridge",
+  "R@1": 0.0,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 23,
+  "docs": [
+   "hotpot:Dwyer_Arena",
+   "hotpot:Lewiston_Maineiacs",
+   "hotpot:Billings_Bulls",
+   "hotpot:2006_07_QMJHL_season",
+   "hotpot:Androscoggin_Bank_Colis_e",
+   "hotpot:2007_Memorial_Cup",
+   "hotpot:Case_Gym",
+   "hotpot:Vermont_Catamounts_men_s_basketball"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-09",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 27,
+  "docs": [
+   "hotpot:Annie_Morton",
+   "hotpot:Terry_Richardson",
+   "hotpot:Lady_Gaga_x_Terry_Richardson",
+   "hotpot:Kenton_Richardson",
+   "hotpot:Gumbo_PJ_Morton_album",
+   "hotpot:Index_Magazine",
+   "hotpot:Amanda_Lepore"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-10",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 34,
+  "docs": [
+   "hotpot:Local_H",
+   "hotpot:For_Against",
+   "hotpot:Amherst_Massachusetts",
+   "hotpot:Hallelujah_I_m_a_Bum_album",
+   "hotpot:Mendocino_County_GMO_Ban",
+   "hotpot:Loan_modification_in_the_United_States",
+   "hotpot:President_pro_tempore_of_the_United_States_Senate"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-11",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 31,
+  "docs": [
+   "hotpot:University_of_Kansas",
+   "hotpot:Kansas_Song",
+   "hotpot:University_of_Missouri_Kansas_City",
+   "hotpot:Kansas_City_metropolitan_area",
+   "hotpot:Downtown_Kansas_City",
+   "hotpot:Kansas_City_jazz",
+   "hotpot:History_of_the_Kansas_City_metropolitan_area"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-12",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 40,
+  "docs": [
+   "hotpot:The_Family_Man",
+   "hotpot:David_Weissman",
+   "hotpot:Deadfall_1993_film",
+   "hotpot:Gone_in_60_Seconds_2000_film",
+   "hotpot:It_Could_Happen_to_You_1994_film",
+   "hotpot:Time_to_Kill_1989_film",
+   "hotpot:City_of_Angels_film",
+   "hotpot:Drive_Angry",
+   "hotpot:Ungod"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-13",
+  "category": "hotpot_bridge",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 30,
+  "docs": [
+   "hotpot:Arnold_Schwarzenegger_filmography",
+   "hotpot:End_of_Days_film",
+   "hotpot:Oh_My_God_Guns_N_Roses_song",
+   "hotpot:True_Lies",
+   "hotpot:Last_Action_Hero",
+   "hotpot:Guns_N_Roses_discography",
+   "hotpot:Steven_Adler",
+   "hotpot:Get_Christie_Love"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-14",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 29,
+  "docs": [
+   "hotpot:Random_House_Tower",
+   "hotpot:888_7th_Avenue",
+   "hotpot:Villard_imprint",
+   "hotpot:Pershing_Square_Capital_Management",
+   "hotpot:Real_estate_technology",
+   "hotpot:Carl_B._Stokes_United_States_Courthouse"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-15",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 31,
+  "docs": [
+   "hotpot:Alex_Ferguson",
+   "hotpot:Ernest_Mangnall",
+   "hotpot:Matt_Busby",
+   "hotpot:David_Beckham_Academy",
+   "hotpot:Joshua_Parlby",
+   "hotpot:David_Beckham_s_Soccer_USA",
+   "hotpot:1995_96_Manchester_United_F.C._season",
+   "hotpot:1996_FA_Charity_Shield",
+   "hotpot:The_Class_of_92"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-16",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 28,
+  "docs": [
+   "hotpot:Brown_State_Fishing_Lake",
+   "hotpot:Osage_State_Fishing_Lake",
+   "hotpot:Shawnee_State_Fishing_Lake",
+   "hotpot:Brown_County_Kansas",
+   "hotpot:Neosho_State_Fishing_Lake",
+   "hotpot:Higgins_Lake",
+   "hotpot:Fishing_Lake",
+   "hotpot:Higgins_Lake_Michigan"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-17",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 35,
+  "docs": [
+   "hotpot:Vermont_Catamounts_men_s_soccer",
+   "hotpot:Vermont_Catamounts_men_s_basketball",
+   "hotpot:Vermont_Catamounts_men_s_ice_hockey",
+   "hotpot:2016_17_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2012_13_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2011_12_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2010_11_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:America_East_Conference",
+   "hotpot:2015_16_Vermont_Catamounts_men_s_basketball_team"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-18",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 30,
+  "docs": [
+   "hotpot:Giuseppe_Verdi",
+   "hotpot:Ambroise_Thomas",
+   "hotpot:Teatro_Giuseppe_Verdi",
+   "hotpot:Verdi_the_King_of_Melody",
+   "hotpot:Giuseppe_Verdi_film",
+   "hotpot:Armand_Castelmary",
+   "hotpot:Ferdinando_Provesi",
+   "hotpot:List_of_major_opera_composers"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-19",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 48,
+  "docs": [
+   "hotpot:Roger_O._Egeberg",
+   "hotpot:Douglas_J._Bennet",
+   "hotpot:Office_of_Population_Affairs",
+   "hotpot:Nelson_Rockefeller",
+   "hotpot:Edward_D._Martin",
+   "hotpot:Steven_K._Galson",
+   "hotpot:Bradford_P._Campbell"
+  ]
+ },
+ {
+  "config": "fixed-400",
+  "id": "hp-20",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 25,
+  "docs": [
+   "hotpot:Henry_Roth",
+   "hotpot:Robert_Erskine_Childers",
+   "hotpot:Erskine_Barton_Childers",
+   "hotpot:Molly_Childers",
+   "hotpot:Robert_Caesar_Childers",
+   "hotpot:Robert_Barton",
+   "hotpot:Asgard_yacht",
+   "hotpot:Gretchen_Osgood_Warren"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-01",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 14,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:q1_reliability_review.html"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-02",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 15,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-03",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 9,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:change_log.csv",
+   "novapay:q1_reliability_review.html",
+   "postmortems:https_github.blog_news-insights_company-news_github-availability-report-may-2021",
+   "postmortems:https_web.archive.org_web_20180830181639_https_paritytech.io_the-multi-sig-hack-a-postmortem",
+   "postmortems:https_github.blog_2021-12-01-github-availability-report-november-2021",
+   "postmortems:https_status.heroku.com_incidents_2558",
+   "postmortems:https_discuss.circleci.com_t_post-incident-report-april-4-2025-delays-in-starting-workflows_53113"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-04",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:architecture.md",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_web.archive.org_web_20210306015541_https_digital.ai_catalyst-blog_subversion-sha1-collision-problem-statement-prevention-and-remediation-options"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-05",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 10,
+  "docs": [
+   "novapay:INC-0325_false_declines.md",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:architecture.md",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-06",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 21,
+  "docs": [
+   "novapay:INC-0325_false_declines.md",
+   "novapay:q1_reliability_review.html",
+   "novapay:change_log.csv",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0312_confluence_export.txt"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-07",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 0.0,
+  "R@5": 0.0,
+  "R@10": 1.0,
+  "MRR": 0.14285714285714285,
+  "latency_ms": 9,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:acquira_status_history.md",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:architecture.md",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:slo_policy.json"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-08",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 13,
+  "docs": [
+   "novapay:team_directory.csv",
+   "hotpot:2015_16_VCU_Rams_men_s_basketball_team",
+   "hotpot:2010_11_VCU_Rams_men_s_basketball_team",
+   "hotpot:2016_17_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:Alex_Ferguson",
+   "hotpot:Sommeren_92",
+   "hotpot:Matt_Busby",
+   "hotpot:Lead_programmer",
+   "hotpot:IFFHS_World_s_Best_Club_Coach"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-09",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 10,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:architecture.md",
+   "novapay:q1_reliability_review.html",
+   "novapay:change_log.csv",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-10",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 13,
+  "docs": [
+   "novapay:change_log.csv",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_help.salesforce.com_s_articleView_id_000396429_type_1",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0312_confluence_export.txt"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-11",
+  "category": "simple",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 10,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "postmortems:https_github.blog_2022-03-23-an-update-on-recent-service-disruptions",
+   "postmortems:https_incident.io_blog_clouds-caches-and-connection-conundrums",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_incident.io_blog_database-performance"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-12",
+  "category": "simple",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.3333333333333333,
+  "latency_ms": 8,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:slo_policy.json",
+   "novapay:change_log.csv",
+   "novapay:architecture.md",
+   "novapay:q1_reliability_review.html",
+   "novapay:acquira_status_history.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-13",
+  "category": "multi_hop",
+  "R@1": 0.0,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 0.5,
+  "latency_ms": 10,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0318_ledger_reconciliation.docx"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-14",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 15,
+  "docs": [
+   "novapay:team_directory.csv",
+   "novapay:change_log.csv",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:slo_policy.json",
+   "novapay:INC-0312_confluence_export.txt"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-15",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 19,
+  "docs": [
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "postmortems:https_slack.engineering_slacks-incident-on-2-22-22",
+   "postmortems:https_slack.engineering_slacks-outage-on-january-4th-2021",
+   "novapay:team_directory.csv",
+   "novapay:architecture.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-16",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:INC-0325_false_declines.md",
+   "novapay:q1_reliability_review.html",
+   "postmortems:https_status.cloud.google.com_incidents_mREMLwZFe3FuLLn3zfTw",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-17",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-18",
+  "category": "multi_hop",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:change_log.csv",
+   "postmortems:https_www.atlassian.com_engineering_post-incident-review-april-2022-outage",
+   "novapay:INC-0325_false_declines.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-19",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 13,
+  "docs": [
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "postmortems:https_incident.io_blog_clouds-caches-and-connection-conundrums",
+   "novapay:change_log.csv",
+   "postmortems:https_incident.io_blog_database-performance"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-20",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:change_log.csv"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-21",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 12,
+  "docs": [
+   "novapay:acquira_status_history.md",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "postmortems:https_aws.amazon.com_message_680342"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-22",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 12,
+  "docs": [
+   "novapay:architecture.md",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:slo_policy.json"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-23",
+  "category": "multi_hop",
+  "R@1": 0.0,
+  "R@3": 0.6666666666666666,
+  "R@5": 0.6666666666666666,
+  "R@10": 0.6666666666666666,
+  "MRR": 0.5,
+  "latency_ms": 18,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:change_log.csv",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-24",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 15,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:oncall_handbook.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "hotpot:Alec_Muffett"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-25",
+  "category": "multi_hop",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 13,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "hotpot:Robert_Nyce"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-26",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 9,
+  "docs": [
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0325_false_declines.md",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:q1_reliability_review.html"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-27",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0325_false_declines.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-28",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 14,
+  "docs": [
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:q1_reliability_review.html",
+   "novapay:change_log.csv",
+   "novapay:INC-0325_false_declines.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-29",
+  "category": "contradiction",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 10,
+  "docs": [
+   "novapay:q1_reliability_review.html",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0318_ledger_reconciliation.docx",
+   "novapay:INC-0325_false_declines.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-36",
+  "category": "injection",
+  "R@1": 0.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.3333333333333333,
+  "latency_ms": 11,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:slo_policy.json",
+   "novapay:q1_reliability_review.html",
+   "novapay:acquira_status_history.md",
+   "novapay:architecture.md",
+   "novapay:INC-0325_false_declines.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "np-37",
+  "category": "injection",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 12,
+  "docs": [
+   "novapay:oncall_handbook.txt",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "novapay:INC-0325_false_declines.md"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "pm-01",
+  "category": "postmortem",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 18,
+  "docs": [
+   "postmortems:https_blog.cloudflare.com_18-november-2025-outage",
+   "postmortems:https_status.incident.io_incidents_01JRDFKAGE07YYDY0KZR137BX3_write-up",
+   "postmortems:https_www.datadoghq.com_blog_2023-03-08-multiregion-infrastructure-connectivity-issue",
+   "postmortems:https_www.fastly.com_blog_summary-of-june-8-outage",
+   "postmortems:https_github.blog_news-insights_company-news_addressing-githubs-recent-availability-issues",
+   "novapay:INC-0312_confluence_export.txt",
+   "novapay:INC-0312_payment_delays.pdf",
+   "postmortems:https_status.heroku.com_incidents_2558",
+   "postmortems:https_status.discordapp.com_incidents_qk9cdgnqnhcn",
+   "postmortems:https_www.atlassian.com_engineering_post-incident-review-april-2022-outage"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "pm-02",
+  "category": "postmortem",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 12,
+  "docs": [
+   "postmortems:https_web.archive.org_web_20211006135542_https_blog.cloudflare.com_todays-outage-post-mortem-82515",
+   "postmortems:https_web.archive.org_web_20211029020126_https_blog.cloudflare.com_incident-report-on-memory-leak-caused-by-cloudflare-parser-bug",
+   "postmortems:https_blog.cloudflare.com_route-leak-incident-january-22-2026",
+   "postmortems:https_blog.cloudflare.com_major-data-center-power-failure-again-cloudflare-code-orange-tested",
+   "postmortems:https_web.archive.org_web_20211016040522_https_blog.cloudflare.com_cloudflare-outage-on-july-17-2020",
+   "postmortems:https_blog.cloudflare.com_post-mortem-on-cloudflare-control-plane-and-analytics-outage",
+   "postmortems:https_blog.cloudflare.com_cloudflare-outage-february-20-2026",
+   "postmortems:https_web.archive.org_web_20211015231917_https_blog.cloudflare.com_a-byzantine-failure-in-the-real-world",
+   "postmortems:https_blog.cloudflare.com_18-november-2025-outage",
+   "postmortems:https_web.archive.org_web_20220621124002_https_blog.cloudflare.com_cloudflare-outage-on-june-21-2022"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "pm-03",
+  "category": "postmortem",
+  "R@1": 1.0,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 12,
+  "docs": [
+   "postmortems:https_allegro.tech_2018_08_postmortem-why-allegro-went-down.html",
+   "postmortems:https_allegro.tech_2015_01_allegro-cast-post-mortem.html",
+   "postmortems:https_github.blog_news-insights_company-news_github-availability-report-october-2024",
+   "postmortems:https_aws.amazon.com_message_5467D2",
+   "postmortems:https_blog.etsy.com_news_2012_demystifying-site-outages",
+   "postmortems:https_status.cloud.google.com_incidents_eo76pxZiDgWVz4z3kmUv",
+   "postmortems:https_web.archive.org_web_20230602082218_https_news.ycombinator.com_item_id_1769761",
+   "postmortems:https_googleblog.blogspot.com_2014_01_todays-outage-for-several-google.html",
+   "postmortems:https_circleci.statuspage.io_incidents_hr0mm9xmm3x6"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-01",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 9,
+  "docs": [
+   "hotpot:Ed_Wood",
+   "hotpot:Ed_Wood_film",
+   "hotpot:Scott_Derrickson",
+   "hotpot:Woodson_Arkansas",
+   "hotpot:Conrad_Brooks",
+   "hotpot:Doctor_Strange_2016_film",
+   "hotpot:Sinister_film",
+   "hotpot:Deliver_Us_from_Evil_2014_film",
+   "hotpot:Adam_Collis"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-02",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:Kiss_and_Tell_1945_film",
+   "hotpot:A_Kiss_for_Corliss",
+   "hotpot:Meet_Corliss_Archer",
+   "hotpot:Janet_Waldo",
+   "hotpot:Meet_Corliss_Archer_TV_series",
+   "hotpot:Cynthia_Hogan",
+   "hotpot:Secretary_of_State_for_Constitutional_Affairs",
+   "hotpot:True_Lies"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-03",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Animorphs",
+   "hotpot:Victoria_Hanley",
+   "hotpot:Andre_Norton_Award",
+   "hotpot:Science_Fantasy_magazine",
+   "hotpot:Etiquette_amp_Espionage",
+   "hotpot:The_Divide_trilogy",
+   "hotpot:The_Hork-Bajir_Chronicles",
+   "hotpot:Shadowshaper"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-04",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:Esma_Sultan_Mansion",
+   "hotpot:Laleli_Mosque",
+   "hotpot:Esma_Sultan_daughter_of_Ahmed_III",
+   "hotpot:Esma_Sultan",
+   "hotpot:Sultan_Ahmed_Mosque",
+   "hotpot:Esma_Sultan_daughter_of_Abdul_Hamid_I",
+   "hotpot:Esma_Sultan_daughter_of_Abd_laziz",
+   "hotpot:Djama_el_Kebir",
+   "hotpot:Gevheri_Kad_n"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-05",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:Big_Stone_Gap_film",
+   "hotpot:Nola_film",
+   "hotpot:I_Love_NY_2015_film",
+   "hotpot:Clinton_Minnesota",
+   "hotpot:Kingston_Morning",
+   "hotpot:It_Could_Happen_to_You_1994_film",
+   "hotpot:Get_Christie_Love",
+   "hotpot:Adriana_Trigiani"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-06",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:2014_S_S",
+   "hotpot:SF9_band",
+   "hotpot:Winner_band",
+   "hotpot:Seventeen_discography",
+   "hotpot:Madtown",
+   "hotpot:History_band",
+   "hotpot:BTS_discography",
+   "hotpot:Cho_Kyuhyun",
+   "hotpot:List_of_songs_written_by_Ravi",
+   "hotpot:List_of_awards_and_nominations_received_by_Shinee"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-07",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:Eenasul_Fateh",
+   "hotpot:Management_consulting",
+   "hotpot:ELDee",
+   "hotpot:Method_Man",
+   "hotpot:James_P._Comer",
+   "hotpot:Criss_Angel",
+   "hotpot:Mick_DJ",
+   "hotpot:Indriati_Iskak"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-08",
+  "category": "hotpot_bridge",
+  "R@1": 0.0,
+  "R@3": 0.5,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Dwyer_Arena",
+   "hotpot:Lewiston_Maineiacs",
+   "hotpot:2006_07_QMJHL_season",
+   "hotpot:Billings_Bulls",
+   "hotpot:Androscoggin_Bank_Colis_e",
+   "hotpot:Vermont_Catamounts_men_s_ice_hockey",
+   "hotpot:Vermont_Catamounts_men_s_basketball"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-09",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 5,
+  "docs": [
+   "hotpot:Annie_Morton",
+   "hotpot:Terry_Richardson",
+   "hotpot:Lady_Gaga_x_Terry_Richardson",
+   "hotpot:Kenton_Richardson",
+   "hotpot:Piano_Girl",
+   "hotpot:Gumbo_PJ_Morton_album",
+   "hotpot:Index_Magazine"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-10",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:Local_H",
+   "hotpot:For_Against",
+   "hotpot:Hallelujah_I_m_a_Bum_album",
+   "hotpot:Amherst_Massachusetts",
+   "hotpot:Mendocino_County_GMO_Ban",
+   "hotpot:Loan_modification_in_the_United_States"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-11",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:University_of_Kansas",
+   "hotpot:Kansas_Song",
+   "hotpot:University_of_Missouri_Kansas_City",
+   "hotpot:Kansas_City_metropolitan_area",
+   "hotpot:Kansas_City_jazz",
+   "hotpot:Downtown_Kansas_City"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-12",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 7,
+  "docs": [
+   "hotpot:The_Family_Man",
+   "hotpot:David_Weissman",
+   "hotpot:Gone_in_60_Seconds_2000_film",
+   "hotpot:Deadfall_1993_film",
+   "hotpot:City_of_Angels_film",
+   "hotpot:Ungod",
+   "hotpot:It_Could_Happen_to_You_1994_film",
+   "hotpot:Time_to_Kill_1989_film",
+   "hotpot:Season_of_the_Witch_2011_film"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-13",
+  "category": "hotpot_bridge",
+  "R@1": 0.0,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 0.5,
+  "latency_ms": 8,
+  "docs": [
+   "hotpot:Arnold_Schwarzenegger_filmography",
+   "hotpot:Oh_My_God_Guns_N_Roses_song",
+   "hotpot:True_Lies",
+   "hotpot:Guns_N_Roses_discography",
+   "hotpot:Last_Action_Hero",
+   "hotpot:End_of_Days_film",
+   "hotpot:Steven_Adler"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-14",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Random_House_Tower",
+   "hotpot:888_7th_Avenue",
+   "hotpot:Villard_imprint",
+   "hotpot:Pershing_Square_Capital_Management",
+   "hotpot:Real_estate_technology",
+   "hotpot:Carl_B._Stokes_United_States_Courthouse",
+   "hotpot:South_Phoenix"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-15",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Alex_Ferguson",
+   "hotpot:Ernest_Mangnall",
+   "hotpot:Matt_Busby",
+   "hotpot:David_Beckham_Academy",
+   "hotpot:David_Beckham_s_Soccer_USA",
+   "hotpot:Joshua_Parlby",
+   "hotpot:1995_96_Manchester_United_F.C._season",
+   "hotpot:1996_FA_Charity_Shield",
+   "hotpot:Peter_Schmeichel"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-16",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Brown_State_Fishing_Lake",
+   "hotpot:Shawnee_State_Fishing_Lake",
+   "hotpot:Brown_County_Kansas",
+   "hotpot:Osage_State_Fishing_Lake",
+   "hotpot:Neosho_State_Fishing_Lake",
+   "hotpot:Higgins_Lake",
+   "hotpot:Higgins_Lake_Michigan",
+   "hotpot:Fishing_Lake"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-17",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Vermont_Catamounts_men_s_soccer",
+   "hotpot:Vermont_Catamounts_men_s_basketball",
+   "hotpot:Vermont_Catamounts_men_s_ice_hockey",
+   "hotpot:2016_17_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2012_13_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2013_14_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2011_12_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:2010_11_Vermont_Catamounts_men_s_basketball_team",
+   "hotpot:America_East_Conference",
+   "hotpot:2015_16_Vermont_Catamounts_men_s_basketball_team"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-18",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Ambroise_Thomas",
+   "hotpot:Teatro_Giuseppe_Verdi",
+   "hotpot:Giuseppe_Verdi",
+   "hotpot:Verdi_the_King_of_Melody",
+   "hotpot:Giuseppe_Verdi_film",
+   "hotpot:Ferdinando_Provesi",
+   "hotpot:List_of_major_opera_composers",
+   "hotpot:Armand_Castelmary"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-19",
+  "category": "hotpot_bridge",
+  "R@1": 0.5,
+  "R@3": 0.5,
+  "R@5": 0.5,
+  "R@10": 0.5,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Roger_O._Egeberg",
+   "hotpot:Douglas_J._Bennet",
+   "hotpot:Nelson_Rockefeller",
+   "hotpot:Office_of_Population_Affairs",
+   "hotpot:Steven_K._Galson",
+   "hotpot:Edward_D._Martin",
+   "hotpot:Bradford_P._Campbell"
+  ]
+ },
+ {
+  "config": "sentence-400",
+  "id": "hp-20",
+  "category": "hotpot_comparison",
+  "R@1": 0.5,
+  "R@3": 1.0,
+  "R@5": 1.0,
+  "R@10": 1.0,
+  "MRR": 1.0,
+  "latency_ms": 6,
+  "docs": [
+   "hotpot:Henry_Roth",
+   "hotpot:Robert_Erskine_Childers",
+   "hotpot:Molly_Childers",
+   "hotpot:Robert_Caesar_Childers",
+   "hotpot:Erskine_Barton_Childers",
+   "hotpot:Asgard_yacht",
+   "hotpot:Robert_Barton"
+  ]
+ }
+]
