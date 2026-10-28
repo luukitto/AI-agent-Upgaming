@@ -47,6 +47,11 @@ class FixedSizeChunker(Chunker):
             if end >= len(text):
                 break
             start = max(end - self.overlap, start + 1)
+            # don't start the overlap mid-word either: move forward to the next word boundary
+            if not text[start - 1].isspace():
+                ws = text.find(" ", start, end)
+                if ws != -1:
+                    start = ws + 1
         return [c for c in chunks if c]
 
 

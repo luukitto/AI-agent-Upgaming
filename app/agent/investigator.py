@@ -135,7 +135,8 @@ class Investigator:
 
             # 4. verification
             res = self._finalize(final_args, evidence, result)
-            trace.append({"step": "verify", "valid_citations": sum(c.valid for c in res.citations),
+            # res.trace is a copy (pydantic validation), so append to it, not to `trace`
+            res.trace.append({"step": "verify", "valid_citations": sum(c.valid for c in res.citations),
                           "invalid_citations": sum(not c.valid for c in res.citations)})
             emit("answer", res.model_dump())
             return res

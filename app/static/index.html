@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Investigation Engine</title>
+<style>
+  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#6b6b70; --card:#fff; --line:#e3e3e8; --accent:#2457d6;
+          --ok:#1a7f37; --warn:#b35900; --bad:#c62828; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#151517; --fg:#ececf0; --muted:#9a9aa3; --card:#1e1e22; --line:#33333a; --accent:#7aa2ff;
+            --ok:#4cc26a; --warn:#f0a040; --bad:#ff6b6b; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:14px 16px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; }
+  header h1 { font-size:18px; margin:0; }
+  #stats { color:var(--muted); font-size:13px; }
+  nav { display:flex; gap:4px; padding:8px 16px 0; }
+  nav button { border:1px solid var(--line); border-bottom:none; background:transparent; color:var(--fg);
+               padding:8px 14px; border-radius:8px 8px 0 0; cursor:pointer; }
+  nav button.active { background:var(--card); font-weight:600; }
+  main { max-width:1000px; margin:0 auto; padding:16px; }
+  section { display:none; } section.active { display:block; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px; }
+  textarea, input[type=text], select { width:100%; padding:9px; border:1px solid var(--line); border-radius:8px;
+                                       background:var(--card); color:var(--fg); font:inherit; }
+  textarea { min-height:70px; resize:vertical; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+  button.primary { background:var(--accent); color:#fff; border:none; padding:9px 16px; border-radius:8px; cursor:pointer; font:inherit; }
+  button.primary:disabled { opacity:.5; cursor:default; }
+  button.small { padding:3px 8px; font-size:12px; border:1px solid var(--line); background:transparent; color:var(--fg); border-radius:6px; cursor:pointer; }
+  .muted { color:var(--muted); font-size:13px; }
+  .badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600; border:1px solid currentColor; }
+  .answered { color:var(--ok); } .insufficient_evidence { color:var(--warn); } .error { color:var(--bad); }
+  .answer { white-space:pre-wrap; margin:10px 0; }
+  .cite { cursor:pointer; color:var(--accent); text-decoration:underline; font-family:ui-monospace, monospace; font-size:13px; }
+  .cite.invalid { color:var(--bad); text-decoration:line-through; }
+  .chunk { border-left:3px solid var(--line); padding:6px 10px; margin:8px 0; white-space:pre-wrap; font-size:13px; }
+  .chunk h4 { margin:0 0 4px; font-size:13px; }
+  .log { font-family:ui-monospace, monospace; font-size:12px; color:var(--muted); max-height:220px; overflow:auto; }
+  .contra { border-left:3px solid var(--warn); padding:6px 10px; margin:6px 0; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:6px; border-bottom:1px solid var(--line); vertical-align:top; word-break:break-word; }
+  dialog { max-width:800px; width:calc(100% - 32px); border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--fg); }
+</style>
+</head>
+<body>
+<header><h1>AI Investigation Engine</h1><span id="stats">loading…</span></header>
+<nav>
+  <button data-tab="ask" class="active">Investigate</button>
+  <button data-tab="search">Search</button>
+  <button data-tab="docs">Documents</button>
+</nav>
+<main>
+  <!-- Investigate -->
+  <section id="ask" class="active">
+    <div class="card">
+      <textarea id="question" placeholder="e.g. Which system change caused the payment processing delays in March, which services were affected, and which documents confirm it?"></textarea>
+      <div class="row">
+        <label><input type="checkbox" id="agentic" checked> agentic (multi-step tool calling)</label>
+        <label>retrieval <select id="askMode" style="width:auto"><option>hybrid</option><option>dense</option><option>bm25</option></select></label>
+        <button class="primary" id="askBtn">Investigate</button>
+      </div>
+    </div>
+    <div class="card" id="progressCard" hidden><b>Progress</b><div class="log" id="progress"></div></div>
+    <div class="card" id="resultCard" hidden></div>
+  </section>
+
+  <!-- Search -->
+  <section id="search">
+    <div class="card">
+      <input type="text" id="query" placeholder="search query">
+      <div class="row">
+        <label>mode <select id="searchMode" style="width:auto"><option>hybrid</option><option>dense</option><option>bm25</option></select></label>
+        <label><input type="checkbox" id="mmr" checked> MMR re-rank</label>
+        <button class="primary" id="searchBtn">Search</button>
+        <span class="muted" id="searchInfo"></span>
+      </div>
+    </div>
+    <div id="searchResults"></div>
+  </section>
+
+  <!-- Documents -->
+  <section id="docs">
+    <div class="card">
+      <b>Add documents</b> <span class="muted" id="formats"></span>
+      <div class="row"><input type="file" id="files" multiple><button class="primary" id="uploadBtn">Upload</button></div>
+      <div class="muted">Uploading a file with the same name again creates a new version. Dataset documents need an admin token to modify.</div>
+      <div class="row"><input type="text" id="adminToken" placeholder="admin token (optional)" style="max-width:300px"></div>
+      <div id="uploadResult" class="log"></div>
+    </div>
+    <div class="card">
+      <div class="row" style="margin-top:0">
+        <label>corpus <select id="corpus" style="width:auto"><option value="">all</option><option>novapay</option><option>user</option><option>postmortems</option><option>hotpot</option></select></label>
+        <button class="small" id="reloadDocs">reload</button>
+      </div>
+      <table><thead><tr><th>title</th><th>doc id</th><th>type</th><th>chunks</th><th>ver</th><th></th></tr></thead><tbody id="docRows"></tbody></table>
+      <div class="row"><button class="small" id="moreDocs" hidden>more</button></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="viewer"><div id="viewerBody"></div><div class="row"><button class="small" onclick="viewer.close()">close</button></div></dialog>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const chunkStore = {};  // chunk_id -> hit, filled from search events so citations can be shown
+
+async function api(path, opts = {}) {
+  const r = await fetch(path, opts);
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(body.detail || `${r.status} ${r.statusText}`);
+  return body;
+}
+
+// tabs
+document.querySelectorAll("nav button").forEach((b) => b.onclick = () => {
+  document.querySelectorAll("nav button, section").forEach((e) => e.classList.remove("active"));
+  b.classList.add("active"); $(b.dataset.tab).classList.add("active");
+  if (b.dataset.tab === "docs" && !$("docRows").children.length) loadDocs(true);
+});
+
+api("/api/stats").then((s) => {
+  $("stats").textContent = `${s.documents} documents · ${s.chunks} chunks · ${s.vector_db} · LLM ${s.llm_model} · embeddings ${s.embed_model}`;
+  $("formats").textContent = `(${s.supported_formats.join(" ")})`;
+}).catch((e) => $("stats").textContent = "stats unavailable: " + e.message);
+
+function renderChunk(h) {
+  return `<div class="chunk"><h4>${esc(h.title)} <span class="muted">${esc(h.chunk_id)}${h.score ? " · score " + h.score : ""}</span></h4>${esc(h.text)}</div>`;
+}
+
+async function showChunk(cid) {
+  let h = chunkStore[cid];
+  if (!h) {
+    const docId = cid.slice(0, cid.lastIndexOf("#"));
+    try { (await api("/api/documents/" + encodeURIComponent(docId))).chunks.forEach((c) => chunkStore[c.chunk_id] = c); } catch {}
+    h = chunkStore[cid];
+  }
+  $("viewerBody").innerHTML = h ? renderChunk(h) : `<p>Chunk ${esc(cid)} not found.</p>`;
+  $("viewer").showModal();
+}
+document.addEventListener("click", (e) => { if (e.target.dataset.chunk) showChunk(e.target.dataset.chunk); });
+
+// ---------- investigate (SSE over POST) ----------
+function logLine(t) { $("progress").insertAdjacentHTML("beforeend", `<div>${esc(t)}</div>`); $("progress").scrollTop = 1e9; }
+
+function renderResult(r) {
+  const cites = r.citations.map((c) => `<li><span class="cite ${c.valid ? "" : "invalid"}" data-chunk="${esc(c.chunk_id)}">${esc(c.chunk_id)}</span> ${esc(c.title)}${c.quote ? ` — <i>“${esc(c.quote)}”</i>` : ""}${c.valid ? "" : " <span class='muted'>(not in retrieved evidence, discarded)</span>"}</li>`).join("");
+  const contras = r.contradictions.map((c) => `<div class="contra">${esc(c.description)}<br>${c.chunk_ids.map((i) => `<span class="cite" data-chunk="${esc(i)}">${esc(i)}</span>`).join(" ")}</div>`).join("");
+  $("resultCard").innerHTML = `
+    <span class="badge ${esc(r.status)}">${esc(r.status.replace("_", " "))}</span>
+    <span class="muted">confidence ${(r.confidence ?? 0).toFixed(2)} · ${r.latency_ms} ms · ${r.usage.llm_calls ?? 0} LLM calls · ${(r.usage.prompt_tokens ?? 0) + (r.usage.completion_tokens ?? 0)} tokens</span>
+    <div class="answer">${esc(r.answer)}</div>
+    ${contras ? `<b>Contradictions found</b>${contras}` : ""}
+    ${cites ? `<b>Sources</b><ol>${cites}</ol>` : ""}
+    ${r.sub_questions?.length ? `<details><summary class="muted">plan</summary><ul>${r.sub_questions.map((q) => `<li>${esc(q)}</li>`).join("")}</ul></details>` : ""}`;
+  $("resultCard").hidden = false;
+}
+
+$("askBtn").onclick = async () => {
+  const question = $("question").value.trim();
+  if (question.length < 3) return;
+  $("askBtn").disabled = true; $("progress").innerHTML = ""; $("progressCard").hidden = false; $("resultCard").hidden = true;
+  try {
+    const resp = await fetch("/api/ask/stream", {method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({question, agentic: $("agentic").checked, mode: $("askMode").value})});
+    if (!resp.ok) throw new Error((await resp.json().catch(() => ({}))).detail || resp.statusText);
+    const reader = resp.body.getReader(), dec = new TextDecoder();
+    let buf = "";
+    for (;;) {
+      const {value, done} = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, {stream: true});
+      let i;
+      while ((i = buf.indexOf("\n\n")) !== -1) {
+        const block = buf.slice(0, i); buf = buf.slice(i + 2);
+        const ev = /^event: (.*)$/m.exec(block)?.[1], data = JSON.parse(/^data: (.*)$/m.exec(block)?.[1] || "{}");
+        if (ev === "plan") logLine("plan: " + data.sub_questions.join(" | "));
+        else if (ev === "search") { logLine(`search "${data.query}" → ${data.results.length} new chunks`); }
+        else if (ev === "tool_call") logLine(`tool ${data.name} ${data.arguments}`);
+        else if (ev === "answer") { renderResult(data); logLine("done"); }
+        else if (ev === "error") logLine("error: " + data.message);
+      }
+    }
+  } catch (e) { logLine("error: " + e.message); }
+  $("askBtn").disabled = false;
+};
+
+// ---------- search ----------
+$("searchBtn").onclick = async () => {
+  const query = $("query").value.trim();
+  if (!query) return;
+  $("searchInfo").textContent = "searching…";
+  try {
+    const r = await api("/api/search", {method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({query, mode: $("searchMode").value, use_mmr: $("mmr").checked, top_k: 10})});
+    $("searchInfo").textContent = `${r.hits.length} hits in ${r.latency_ms} ms`;
+    $("searchResults").innerHTML = r.hits.map((h) => `<div class="card">${renderChunk(h)}<div class="muted">ranks: ${esc(JSON.stringify(h.debug.ranks))}</div></div>`).join("");
+  } catch (e) { $("searchInfo").textContent = e.message; }
+};
+$("query").onkeydown = (e) => { if (e.key === "Enter") $("searchBtn").click(); };
+
+// ---------- documents ----------
+let nextOffset = null;
+async function loadDocs(reset) {
+  if (reset) { $("docRows").innerHTML = ""; nextOffset = null; }
+  const q = new URLSearchParams({limit: 50});
+  if (nextOffset) q.set("offset", nextOffset);
+  if ($("corpus").value) q.set("corpus", $("corpus").value);
+  const r = await api("/api/documents?" + q);
+  nextOffset = r.next_offset; $("moreDocs").hidden = !nextOffset;
+  $("docRows").insertAdjacentHTML("beforeend", r.documents.map((d) => `<tr>
+    <td>${esc(d.title)}</td><td class="muted">${esc(d.doc_id)}</td><td>${esc(d.doc_type)}</td><td>${d.num_chunks}</td><td>${d.version}</td>
+    <td><button class="small" data-view="${esc(d.doc_id)}">view</button> <button class="small" data-del="${esc(d.doc_id)}">delete</button></td></tr>`).join(""));
+}
+$("reloadDocs").onclick = () => loadDocs(true);
+$("corpus").onchange = () => loadDocs(true);
+$("moreDocs").onclick = () => loadDocs(false);
+
+$("docRows").onclick = async (e) => {
+  const view = e.target.dataset.view, del = e.target.dataset.del;
+  if (view) {
+    const r = await api("/api/documents/" + encodeURIComponent(view));
+    $("viewerBody").innerHTML = `<h3>${esc(r.document.title)}</h3><div class="muted">${esc(JSON.stringify(r.document.metadata))}</div>` + r.chunks.map(renderChunk).join("");
+    $("viewer").showModal();
+  }
+  if (del && confirm(`Delete ${del}?`)) {
+    try { await api("/api/documents/" + encodeURIComponent(del), {method: "DELETE", headers: {"X-Admin-Token": $("adminToken").value}}); e.target.closest("tr").remove(); }
+    catch (err) { alert(err.message); }
+  }
+};
+
+$("uploadBtn").onclick = async () => {
+  const files = $("files").files;
+  if (!files.length) return;
+  const fd = new FormData();
+  for (const f of files) fd.append("files", f);
+  $("uploadBtn").disabled = true; $("uploadResult").textContent = "uploading…";
+  try {
+    const r = await api("/api/documents", {method: "POST", body: fd});
+    $("uploadResult").innerHTML = r.results.map((x) => `<div>${esc(JSON.stringify(x))}</div>`).join("");
+    loadDocs(true);
+  } catch (e) { $("uploadResult").textContent = e.message; }
+  $("uploadBtn").disabled = false;
+};
+</script>
+</body>
+</html>
