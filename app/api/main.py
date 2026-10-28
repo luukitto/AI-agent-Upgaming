@@ -134,7 +134,9 @@ async def _read_upload(f: UploadFile) -> bytes:
 
 
 @app.post("/api/documents")
-async def upload_documents(files: list[UploadFile] = File(...), c: Container = Depends(get_container)):
+async def upload_documents(request: Request, files: list[UploadFile] = File(...),
+                           c: Container = Depends(get_container)):
+    rate_limit(request)  # uploads spend embedding quota too
     results = []
     for f in files:
         data = await _read_upload(f)

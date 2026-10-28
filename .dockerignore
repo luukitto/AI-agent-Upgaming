@@ -1,0 +1,12 @@
+.git
+.idea
+.venv
+.env
+**/__pycache__
+.pytest_cache
+data/qdrant
+data/raw
+data/corpus
+data/llm_cache
+data/bm25.pkl
+eval/results

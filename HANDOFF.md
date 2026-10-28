@@ -1,30 +1,19 @@
 # Work-in-progress notes (delete before submission)
 
 ## Setup on a new machine
-```
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-copy .env.example .env          # then put your Google AI Studio key in LLM_API_KEY
-python -m scripts.build_corpus  # re-downloads HotpotQA -> data/corpus/hotpot_*.jsonl (git-ignored)
-```
+See README §4. Corpus files are git-ignored: run `python -m scripts.build_corpus` first.
 
 ## Done
-- Parsers (pdf/docx/md/txt/html/csv/json), chunkers (fixed vs sentence), dedup (sha256 exact + simhash near-dup)
-- Qdrant store, own BM25, RRF fusion, MMR, hybrid retriever
-- LLM client (retries/backoff, usage, disk cache), tool-calling investigator agent, FastAPI app with SSE
-- Corpus: ~55k HotpotQA paragraphs, 244 danluu post-mortems, synthetic NovaPay docs with planted contradictions
-- Embeddings switched from local fastembed (too slow: ~15 docs/s) to Gemini API `gemini-embedding-001` (768-d)
-- Chat models: `gemini-2.5-*` return 404 on the new key -> defaults now `gemini-3.5-flash` / `gemini-3.5-flash-lite` (verified working)
+- Everything in the scaffold commit (ingestion, Qdrant, own BM25/RRF/MMR, LLM client, agent, API)
+- Web UI (`app/static/index.html`): investigate with live SSE progress, search with per-retriever ranks, document CRUD
+- 36 offline tests (`pytest -q`), with fixes for the chunker overlap and lost verify-trace bugs they found
+- Eval: 60 questions (`eval/questions.jsonl`) + harness (`eval/run_eval.py`: retrieval / e2e / chunking)
+- Dockerfile for HF Spaces, README, EVAL_REPORT skeleton, AI_USAGE draft
 
-## Blocker: embedding quota
-Free tier = 100 embed requests/min, and each text in a batch counts as one request
-(~100 texts/min, so ~11 h for ~67k chunks, plus a daily cap). Options:
-1. Enable billing on the Google project (paid tier is fast; roughly ~$1-2 for the whole corpus), or
-2. Index a smaller dense subset (would weaken the 50k requirement).
-
-## Next steps
-1. Resolve embedding quota, then: `python -m scripts.ingest_corpus --limit 2000` (smoke), then full run
-2. Verify tool calling works end-to-end with gemini-3.5-flash
-3. Eval harness (40+ questions, Recall@K, MRR, correctness, citation accuracy, 2 configs) + report
-4. UI, deployment (HF Spaces + Qdrant Cloud), README, AI usage report, tests
+## Remaining (needs API key / accounts)
+1. `.env` with `LLM_API_KEY`. Embedding quota decision: enable billing (~$1 total) or wait several days on the free tier
+2. Qdrant Cloud cluster → set `QDRANT_URL`/`QDRANT_API_KEY` → `python -m scripts.ingest_corpus` (straight to the cloud)
+3. Smoke-test: `uvicorn app.api.main:app`, ask the NovaPay example question in the UI
+4. `python -m eval.run_eval retrieval`, `chunking`, `e2e` → fill in EVAL_REPORT §4 with the real numbers and analysis
+5. HF Space (Docker) + secrets → push → put the URL in README
+6. Finish AI_USAGE.md TODOs, delete this file

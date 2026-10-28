@@ -51,8 +51,9 @@ class VectorStore:
                 self.documents,
                 vectors_config=models.VectorParams(size=1, distance=models.Distance.DOT),
             )
-            self.client.create_payload_index(self.documents, "content_hash",
-                                             models.PayloadSchemaType.KEYWORD)
+            # Qdrant Cloud (strict mode) refuses filters on unindexed fields
+            for field in ("content_hash", "metadata.corpus"):
+                self.client.create_payload_index(self.documents, field, models.PayloadSchemaType.KEYWORD)
 
     # ---------- chunks ----------
     def upsert_chunks(self, chunks: list[Chunk], vectors: np.ndarray, batch: int = 512) -> None:
