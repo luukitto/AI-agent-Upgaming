@@ -153,6 +153,8 @@ class LLMClient:
         except openai.APIStatusError as e:
             if e.status_code == 404:  # model retired or not enabled for this key
                 raise _ModelUnavailable("model not found for this API key") from e
+            if e.status_code == 402:  # prepaid billing with no credits left; free models (Gemma) still work
+                raise _ModelUnavailable("billing credits depleted for this project", daily_quota=True) from e
             raise LLMError(f"LLM call failed: {e}") from e
         except Exception as e:
             raise LLMError(f"LLM call failed after retries: {e}") from e
