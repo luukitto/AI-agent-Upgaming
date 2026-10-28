@@ -35,8 +35,8 @@ declines to answer when the evidence is missing.
                                │                      │                   get_document_context / submit_answer
                                ▼                      ▼                 4 verify citations vs evidence log
                   ┌──────── Qdrant ────────┐   in-memory inverted              │
-                  │ chunks: 768-d vectors  │   index (pickled, rebuilt         ▼
-                  │   + text/metadata      │   from Qdrant on start)   Gemini (OpenAI-compatible API)
+                  │ chunks: 384-d vectors  │   index (pickled, rebuilt         ▼
+                  │   + text/metadata      │   from Qdrant on start)   Gemini chat (OpenAI-compatible API)
                   │ documents: registry    │                           retries · backoff · disk cache
                   └────────────────────────┘
 ```
@@ -48,7 +48,7 @@ declines to answer when the evidence is missing.
 | Dedup | `app/ingestion/dedup.py` | SHA-256 of normalised text (exact) + 64-bit SimHash over 3-shingles (near-dup, Hamming ≤ 3) |
 | CRUD | `app/ingestion/pipeline.py` | `doc_id = corpus:source`; re-upload = new version (old chunks removed from both indexes); delete |
 | Vector DB | `app/store/vector_store.py` | Qdrant: embedded on-disk locally, Qdrant Cloud in production (same code) |
-| Embeddings | `app/embeddings.py` | `gemini-embedding-001`, 768-d Matryoshka, separate document/query task types, query LRU cache |
+| Embeddings | `app/embeddings.py` | default: local `BAAI/bge-small-en-v1.5` (384-d, ONNX on CPU, query instruction prefix); optional: `gemini-embedding-001` (768-d, task types). Query LRU cache |
 | Keyword search | `app/retrieval/bm25.py` | **own** Okapi BM25 with an incremental inverted index (add/remove per chunk) |
 | Fusion / re-rank | `app/retrieval/fusion.py` | **own** Reciprocal Rank Fusion + Maximal Marginal Relevance |
 | Agent | `app/agent/` | tool calling, decomposition, citation verification, injection flagging |
@@ -80,7 +80,7 @@ declines to answer when the evidence is missing.
 | **MMR re-rank** | Multi-document questions need *different* sources. MMR removes near-duplicate chunks (e.g. the PDF and the Confluence export of the same report). |
 | **Sentence chunker by default** | Keeps facts like "CHG-2031 reduced the pool from 200 to 20" inside one chunk and prefixes the section heading. Compared against fixed-size chunks in the eval. |
 | **Gemini via the OpenAI-compatible API** | Free tier, native tool calling, and the provider can be swapped by changing `LLM_BASE_URL`/`LLM_MODEL`. A fast model handles decomposition and judging; the main model runs the agent. |
-| **Task-typed embeddings** | `RETRIEVAL_DOCUMENT` vs `RETRIEVAL_QUERY` embeddings beat symmetric ones for asymmetric search. 768 dims saves 4× storage compared with 3072. |
+| **Local embeddings (bge-small-en-v1.5)** | The Gemini free tier caps embedding requests per day, and every text counts as a request, so the ~65k chunks would take weeks. A local ONNX model has no quota or cost and embeds the whole corpus in about an hour on a 6-core laptop CPU (length-sorted batches are ~2.5× faster). A query embeds in ~15 ms on the same CPU. BGE is asymmetric: queries get an instruction prefix and documents don't. It beat the faster all-MiniLM-L6-v2 on retrieval benchmarks, and the Gemini embedder remains selectable with `EMBED_PROVIDER=gemini`. |
 | **Citation verification in code, not in the prompt** | LLMs invent ids. Checking them against what was actually retrieved is cheap and makes the citation-accuracy metric meaningful. |
 | **No LangChain/LlamaIndex** | The whole pipeline is ~2k lines and every step can be explained and debugged directly. |
 
@@ -108,7 +108,7 @@ python -m scripts.build_corpus                           # download + build corp
 python -m scripts.ingest_corpus --limit 2000             # smoke index (fast)
 python -m scripts.ingest_corpus                          # full index (~65k chunks)
 uvicorn app.api.main:app --reload                        # http://localhost:8000
-pytest -q                                                # 36 tests, no API key needed
+pytest -q                                                # 37 tests, no API key needed
 ```
 
 Evaluation: `python -m eval.make_questions`, then `python -m eval.run_eval retrieval|e2e|chunking` (see EVAL_REPORT.md).
@@ -151,14 +151,14 @@ is sent in a header (never in URLs or logs), and dataset documents can only be c
 | Resource | Limit | Mitigation |
 |---|---|---|
 | HF Space (free CPU) | sleeps after ~48 h idle; cold start ≈ 1–2 min (BM25 rebuild) | documented; first request after sleep is slow |
-| Qdrant Cloud free | 1 GB RAM/disk | 65k × 768-d float32 ≈ 200 MB vectors + payload; vectors `on_disk` |
+| Qdrant Cloud free | 1 GB RAM/disk | 65k × 384-d float32 ≈ 100 MB vectors + ~60 MB payload; vectors `on_disk` |
 | Gemini free tier | per-minute and per-day request caps | per-IP rate limit (10 questions/min), retries with backoff, LLM response cache, query-embedding cache |
-| Embedding the corpus | ≈ 29 M characters ≈ 7 M tokens | free tier needs many hours across several days; with billing enabled it costs ≈ $1 once |
+| Embedding the corpus | ≈ 29 M characters, ~65k chunks | local model: $0, ≈ 1 h one-time on a laptop CPU; the model (~130 MB) is baked into the Docker image |
 | Cost per question | agentic: ~3–6 LLM calls, ~6–15k tokens; single-shot: 1 call | `agentic=false` toggle in UI/API; measured per config in EVAL_REPORT.md |
 
 ## 6. Tests
 
-`pytest -q` runs 36 tests offline. They use an in-memory Qdrant, a hashing embedder and a scripted LLM, so the
+`pytest -q` runs 37 tests offline. They use an in-memory Qdrant, a hashing embedder and a scripted LLM, so the
 real chunkers, dedup, BM25, RRF, MMR, agent loop, citation checks, API routes and eval metrics run without network
 access. They cover parsers for all 7 formats, CRUD and versioning, exact and near duplicates, fabricated-citation
 detection, the step limit, LLM failure handling, tool argument errors, injection flagging, admin protection and SSE.
