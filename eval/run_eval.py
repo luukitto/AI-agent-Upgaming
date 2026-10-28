@@ -185,16 +185,35 @@ def run_e2e(args) -> None:
     }
     configs = {k: v for k, v in configs.items() if not args.configs or k in args.configs.split(",")}
     questions = load_questions(args.limit, set(args.categories.split(",")) if args.categories else None)
+    # finished questions are appended to a progress file, so a run stopped by quota resumes where it left off
+    # (with the latencies measured the first time, not cache-hit latencies)
+    RESULTS.mkdir(exist_ok=True)
+    progress = RESULTS / f"e2e{'_' + args.tag if args.tag else ''}.progress.jsonl"
+    done = {(r["config"], r["id"]): r for r in map(json.loads, progress.open(encoding="utf-8"))} \
+        if progress.exists() else {}
     per_q = []
     for name, acfg in configs.items():
         for i, q in enumerate(questions, 1):
+            if (name, q["id"]) in done:
+                per_q.append(done[(name, q["id"])])
+                continue
             res = c.investigator.investigate(q["question"], acfg)
+            if res.status == "error":
+                # an outage/quota error is not a wrong answer: stop, keep partial results, re-run later
+                print(f"LLM error on {q['id']}: {res.answer}\nStopping; re-run the same command to resume.")
+                return save_e2e(per_q, llm, settings, args)
             row = e2e_row(q, res, judge(llm, settings.llm_fast_model, q, res), name)
             per_q.append(row)
+            with progress.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
             print(f"[{name} {i}/{len(questions)}] {q['id']} {row['status']} correct={row['correctness']} "
                   f"{row['latency_ms']}ms", flush=True)
             time.sleep(args.sleep)  # free-tier RPM friendliness
 
+    save_e2e(per_q, llm, settings, args)
+
+
+def save_e2e(per_q, llm, settings, args) -> None:
     cols = ["correctness", "keyword_hit", "citation_prec", "citation_valid", "abstain_acc", "false_abstain",
             "R@5", "MRR", "latency_ms", "llm_calls", "tokens"]
     overall = by_category([{**r, "category": "ALL"} for r in per_q], cols)
