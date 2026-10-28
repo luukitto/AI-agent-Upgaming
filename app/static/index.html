@@ -5,108 +5,312 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Investigation Engine</title>
 <style>
-  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#6b6b70; --card:#fff; --line:#e3e3e8; --accent:#2457d6;
-          --ok:#1a7f37; --warn:#b35900; --bad:#c62828; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#151517; --fg:#ececf0; --muted:#9a9aa3; --card:#1e1e22; --line:#33333a; --accent:#7aa2ff;
-            --ok:#4cc26a; --warn:#f0a040; --bad:#ff6b6b; }
+  :root {
+    --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f1f3f6; --fg:#14161a; --muted:#646b76; --line:#e2e5ea;
+    --accent:#3b5bdb; --accent-fg:#ffffff; --accent-soft:#e8edfd;
+    --ok:#1f8a4c; --ok-soft:#e3f4ea; --warn:#b25e09; --warn-soft:#fdf1e2; --bad:#c62f2f; --bad-soft:#fde8e8;
+    --shadow:0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.06);
+    --radius:12px; --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
-  * { box-sizing: border-box; }
-  body { margin:0; font:15px/1.5 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
-  header { padding:14px 16px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; }
-  header h1 { font-size:18px; margin:0; }
-  #stats { color:var(--muted); font-size:13px; }
-  nav { display:flex; gap:4px; padding:8px 16px 0; }
-  nav button { border:1px solid var(--line); border-bottom:none; background:transparent; color:var(--fg);
-               padding:8px 14px; border-radius:8px 8px 0 0; cursor:pointer; }
-  nav button.active { background:var(--card); font-weight:600; }
-  main { max-width:1000px; margin:0 auto; padding:16px; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0f1115; --surface:#171a20; --surface-2:#1f232b; --fg:#e8eaee; --muted:#9aa1ad; --line:#2a2f38;
+      --accent:#7c97ff; --accent-fg:#0f1115; --accent-soft:#1f2740;
+      --ok:#4cc27e; --ok-soft:#15281e; --warn:#f0a952; --warn-soft:#2c2114; --bad:#ff7272; --bad-soft:#2e1717;
+      --shadow:none;
+    }
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; font:15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--fg); }
+  button, input, select, textarea { font:inherit; color:inherit; }
+  a { color:var(--accent); }
+
+  /* ---------- header & tabs ---------- */
+  header { background:var(--surface); border-bottom:1px solid var(--line); }
+  .bar { max-width:1180px; margin:0 auto; padding:14px 16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:10px; margin-right:auto; }
+  .logo { width:34px; height:34px; border-radius:9px; background:var(--accent); display:grid; place-items:center; flex:none; }
+  .logo svg { width:20px; height:20px; stroke:var(--accent-fg); }
+  .brand h1 { font-size:17px; margin:0; letter-spacing:-.01em; }
+  .brand p { margin:0; font-size:12.5px; color:var(--muted); }
+  .stats { display:flex; gap:6px; flex-wrap:wrap; }
+  .pill { font-size:12px; padding:3px 9px; border-radius:999px; background:var(--surface-2); color:var(--muted); border:1px solid var(--line); white-space:nowrap; }
+  .pill b { color:var(--fg); font-weight:600; }
+  nav { max-width:1180px; margin:0 auto; padding:0 16px; display:flex; gap:4px; overflow-x:auto; }
+  nav button { border:none; background:none; padding:10px 12px; cursor:pointer; color:var(--muted); font-weight:500;
+               border-bottom:2px solid transparent; white-space:nowrap; }
+  nav button:hover { color:var(--fg); }
+  nav button.active { color:var(--fg); border-bottom-color:var(--accent); }
+
+  main { max-width:1180px; margin:0 auto; padding:20px 16px 48px; }
   section { display:none; } section.active { display:block; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px; }
-  textarea, input[type=text], select { width:100%; padding:9px; border:1px solid var(--line); border-radius:8px;
-                                       background:var(--card); color:var(--fg); font:inherit; }
-  textarea { min-height:70px; resize:vertical; }
-  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
-  button.primary { background:var(--accent); color:#fff; border:none; padding:9px 16px; border-radius:8px; cursor:pointer; font:inherit; }
-  button.primary:disabled { opacity:.5; cursor:default; }
-  button.small { padding:3px 8px; font-size:12px; border:1px solid var(--line); background:transparent; color:var(--fg); border-radius:6px; cursor:pointer; }
+
+  /* ---------- generic ---------- */
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+  .card + .card { margin-top:14px; }
+  .card h2 { font-size:14px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600; }
   .muted { color:var(--muted); font-size:13px; }
-  .badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600; border:1px solid currentColor; }
-  .answered { color:var(--ok); } .insufficient_evidence { color:var(--warn); } .error { color:var(--bad); }
-  .answer { white-space:pre-wrap; margin:10px 0; }
-  .cite { cursor:pointer; color:var(--accent); text-decoration:underline; font-family:ui-monospace, monospace; font-size:13px; }
-  .cite.invalid { color:var(--bad); text-decoration:line-through; }
-  .chunk { border-left:3px solid var(--line); padding:6px 10px; margin:8px 0; white-space:pre-wrap; font-size:13px; }
-  .chunk h4 { margin:0 0 4px; font-size:13px; }
-  .log { font-family:ui-monospace, monospace; font-size:12px; color:var(--muted); max-height:220px; overflow:auto; }
-  .contra { border-left:3px solid var(--warn); padding:6px 10px; margin:6px 0; }
-  table { width:100%; border-collapse:collapse; font-size:13px; }
-  th, td { text-align:left; padding:6px; border-bottom:1px solid var(--line); vertical-align:top; word-break:break-word; }
-  dialog { max-width:800px; width:calc(100% - 32px); border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--fg); }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  textarea, input[type=text], input[type=password], select {
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface);
+    outline:none; transition:border-color .15s, box-shadow .15s; }
+  textarea:focus, input:focus, select:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  textarea { min-height:84px; resize:vertical; }
+  select { width:auto; padding:7px 10px; }
+  .btn { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface);
+         padding:8px 14px; border-radius:10px; cursor:pointer; font-weight:500; }
+  .btn:hover { background:var(--surface-2); }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:var(--accent-fg); }
+  .btn.primary:hover { filter:brightness(1.07); }
+  .btn:disabled { opacity:.55; cursor:default; filter:none; }
+  .btn.sm { padding:4px 10px; font-size:12.5px; border-radius:8px; }
+  .btn.danger:hover { color:var(--bad); border-color:var(--bad); }
+  .spinner { width:14px; height:14px; border:2px solid currentColor; border-right-color:transparent; border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .seg { display:inline-flex; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:2px; }
+  .seg button { border:none; background:none; padding:5px 11px; border-radius:8px; cursor:pointer; color:var(--muted); font-size:13px; }
+  .seg button.on { background:var(--surface); color:var(--fg); box-shadow:var(--shadow); font-weight:600; }
+  .switch { display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:13.5px; user-select:none; }
+  .switch input { display:none; }
+  .switch .track { width:34px; height:20px; border-radius:999px; background:var(--line); position:relative; transition:background .15s; flex:none; }
+  .switch .track::after { content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; transition:transform .15s; }
+  .switch input:checked + .track { background:var(--accent); }
+  .switch input:checked + .track::after { transform:translateX(14px); }
+  .chip { display:inline-flex; align-items:center; gap:4px; font:12px var(--mono); padding:2px 8px; border-radius:6px;
+          background:var(--accent-soft); color:var(--accent); border:none; cursor:pointer; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle; }
+  .chip:hover { text-decoration:underline; }
+  .chip.invalid { background:var(--bad-soft); color:var(--bad); text-decoration:line-through; }
+  .tag { display:inline-block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; padding:1px 7px;
+         border-radius:5px; background:var(--surface-2); color:var(--muted); border:1px solid var(--line); }
+  .empty { text-align:center; padding:36px 16px; color:var(--muted); }
+  .empty svg { width:40px; height:40px; stroke:var(--muted); opacity:.6; margin-bottom:6px; }
+
+  /* ---------- investigate ---------- */
+  .composer textarea { font-size:16px; border:none; padding:4px 2px; box-shadow:none; min-height:72px; background:transparent; }
+  .composer textarea:focus { box-shadow:none; }
+  .composer .controls { border-top:1px solid var(--line); margin-top:10px; padding-top:12px; justify-content:space-between; }
+  .examples { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .example { border:1px dashed var(--line); background:none; border-radius:999px; padding:5px 12px; font-size:13px; color:var(--muted); cursor:pointer; text-align:left; }
+  .example:hover { border-style:solid; border-color:var(--accent); color:var(--fg); }
+  .example b { color:var(--accent); font-weight:600; margin-right:4px; }
+  .grid { display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:14px; margin-top:14px; align-items:start; }
+  @media (max-width: 900px) { .grid { grid-template-columns:minmax(0,1fr); } .grid .trace { order:-1; } }
+
+  .status { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; padding:4px 10px; border-radius:999px; }
+  .status::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
+  .status.answered { color:var(--ok); background:var(--ok-soft); }
+  .status.insufficient_evidence { color:var(--warn); background:var(--warn-soft); }
+  .status.error { color:var(--bad); background:var(--bad-soft); }
+  .result-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .meter { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted); }
+  .meter .bar-bg { width:90px; height:6px; border-radius:99px; background:var(--surface-2); overflow:hidden; }
+  .meter .bar-fg { height:100%; background:var(--accent); border-radius:99px; }
+  .metrics { display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); margin-left:auto; }
+  .answer { margin:14px 0 4px; font-size:15.5px; overflow-wrap:anywhere; }
+  .answer p { margin:0 0 10px; } .answer ul, .answer ol { margin:0 0 10px; padding-left:22px; } .answer li { margin:3px 0; }
+  .answer code { font:13px var(--mono); background:var(--surface-2); padding:1px 5px; border-radius:5px; }
+  .callout { border:1px solid var(--warn); background:var(--warn-soft); border-radius:10px; padding:12px 14px; margin-top:14px; }
+  .callout h3 { margin:0 0 6px; font-size:13.5px; color:var(--warn); display:flex; align-items:center; gap:6px; }
+  .callout p { margin:6px 0; }
+  .sources { margin-top:16px; }
+  .sources h3, .plan h3 { font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 8px; }
+  .source { display:grid; grid-template-columns:26px minmax(0,1fr); gap:10px; padding:10px 0; border-top:1px solid var(--line); }
+  .source .n { width:24px; height:24px; border-radius:7px; background:var(--surface-2); display:grid; place-items:center; font-size:12px; font-weight:600; color:var(--muted); }
+  .source .t { font-weight:600; font-size:14px; }
+  .source q { display:block; margin-top:4px; color:var(--muted); font-size:13.5px; font-style:italic; quotes:"“" "”"; }
+  .source.invalid .t { text-decoration:line-through; color:var(--muted); }
+  .plan { margin-top:14px; } .plan summary { cursor:pointer; color:var(--muted); font-size:13px; }
+
+  .trace { position:sticky; top:12px; }
+  .trace-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .timer { font:12.5px var(--mono); color:var(--muted); }
+  .steps { list-style:none; margin:0; padding:0; max-height:60vh; overflow:auto; }
+  .step { display:grid; grid-template-columns:22px minmax(0,1fr); gap:10px; padding:8px 0; position:relative; }
+  .step:not(:last-child)::before { content:""; position:absolute; left:10px; top:30px; bottom:-8px; width:2px; background:var(--line); }
+  .step .ico { width:22px; height:22px; border-radius:50%; display:grid; place-items:center; background:var(--surface-2); border:1px solid var(--line); }
+  .step .ico svg { width:12px; height:12px; stroke:var(--muted); }
+  .step.done .ico { background:var(--ok-soft); border-color:var(--ok); } .step.done .ico svg { stroke:var(--ok); }
+  .step.err .ico { background:var(--bad-soft); border-color:var(--bad); } .step.err .ico svg { stroke:var(--bad); }
+  .step .what { font-size:13.5px; font-weight:600; }
+  .step .detail { font-size:12.5px; color:var(--muted); overflow-wrap:anywhere; }
+  .step .detail ul { margin:4px 0 0; padding-left:16px; }
+
+  /* ---------- search ---------- */
+  .searchbar { display:flex; gap:10px; }
+  .searchbar input { flex:1; }
+  .hit { display:grid; grid-template-columns:30px minmax(0,1fr); gap:12px; }
+  .hit .rank { font-size:18px; font-weight:700; color:var(--muted); text-align:right; }
+  .hit-head { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .hit-head .t { font-weight:600; }
+  .ranks { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .rk { font:11.5px var(--mono); padding:1px 7px; border-radius:5px; background:var(--surface-2); border:1px solid var(--line); color:var(--muted); }
+  .rk b { color:var(--fg); }
+  .text { margin-top:6px; font-size:13.5px; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .text.clamp { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+  .more { background:none; border:none; color:var(--accent); cursor:pointer; padding:0; font-size:12.5px; margin-top:4px; }
+
+  /* ---------- documents ---------- */
+  .docs-grid { display:grid; grid-template-columns:340px minmax(0,1fr); gap:14px; align-items:start; }
+  @media (max-width: 900px) { .docs-grid { grid-template-columns:minmax(0,1fr); } }
+  .drop { border:2px dashed var(--line); border-radius:12px; padding:26px 14px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s; }
+  .drop:hover, .drop.over { border-color:var(--accent); background:var(--accent-soft); }
+  .drop svg { width:30px; height:30px; stroke:var(--accent); }
+  .drop input { display:none; }
+  .files-picked { font-size:13px; margin-top:8px; overflow-wrap:anywhere; }
+  .results { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+  .res { font-size:13px; padding:8px 10px; border-radius:8px; background:var(--surface-2); overflow-wrap:anywhere; }
+  .res .st { font-weight:600; margin-right:6px; }
+  .res.created .st, .res.updated .st { color:var(--ok); } .res.duplicate .st { color:var(--warn); } .res.rejected .st, .res.error .st { color:var(--bad); }
+  .filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th { text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; padding:8px; border-bottom:1px solid var(--line); }
+  td { padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  td.id { font:12px var(--mono); color:var(--muted); max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  td.actions { white-space:nowrap; text-align:right; }
+  @media (max-width: 640px) { td.id, th.id { display:none; } }
+
+  /* ---------- dialog & toast ---------- */
+  dialog { width:min(820px, calc(100% - 24px)); max-height:85vh; border:1px solid var(--line); border-radius:14px; padding:0; background:var(--surface); color:var(--fg); box-shadow:0 20px 60px rgba(0,0,0,.25); }
+  dialog::backdrop { background:rgba(10,12,16,.45); }
+  .dlg-head { display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--surface); }
+  .dlg-head h3 { margin:0; font-size:15px; margin-right:auto; overflow-wrap:anywhere; }
+  .dlg-body { padding:8px 16px 16px; }
+  .chunk { padding:12px 0; border-bottom:1px solid var(--line); }
+  .chunk:last-child { border-bottom:none; }
+  .chunk.hl { background:var(--accent-soft); margin:0 -16px; padding:12px 16px; }
+  .meta { font:12px var(--mono); color:var(--muted); background:var(--surface-2); border-radius:8px; padding:8px 10px; margin:10px 0; overflow-wrap:anywhere; }
+  #toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%) translateY(20px); opacity:0; transition:all .2s;
+           background:var(--fg); color:var(--bg); padding:10px 16px; border-radius:10px; font-size:14px; max-width:calc(100% - 32px); pointer-events:none; z-index:10; }
+  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
-<header><h1>AI Investigation Engine</h1><span id="stats">loading…</span></header>
-<nav>
-  <button data-tab="ask" class="active">Investigate</button>
-  <button data-tab="search">Search</button>
-  <button data-tab="docs">Documents</button>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-plan" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></symbol>
+</svg>
+
+<header>
+  <div class="bar">
+    <div class="brand">
+      <div class="logo"><svg><use href="#i-search"/></svg></div>
+      <div><h1>AI Investigation Engine</h1><p>Multi-document answers with citations, contradiction checks and abstention</p></div>
+    </div>
+    <div class="stats" id="stats"><span class="pill">loading…</span></div>
+  </div>
+  <nav>
+    <button data-tab="ask" class="active">Investigate</button>
+    <button data-tab="search">Search</button>
+    <button data-tab="docs">Documents</button>
+  </nav>
+</header>
+
 <main>
-  <!-- Investigate -->
+  <!-- ================= Investigate ================= -->
   <section id="ask" class="active">
-    <div class="card">
-      <textarea id="question" placeholder="e.g. Which system change caused the payment processing delays in March, which services were affected, and which documents confirm it?"></textarea>
-      <div class="row">
-        <label><input type="checkbox" id="agentic" checked> agentic (multi-step tool calling)</label>
-        <label>retrieval <select id="askMode" style="width:auto"><option>hybrid</option><option>dense</option><option>bm25</option></select></label>
-        <button class="primary" id="askBtn">Investigate</button>
+    <div class="card composer">
+      <textarea id="question" placeholder="Ask a question that needs evidence from several documents…"></textarea>
+      <div class="row controls">
+        <div class="row">
+          <label class="switch" title="Decompose the question and let the model call search tools in a loop">
+            <input type="checkbox" id="agentic" checked><span class="track"></span>Agentic (multi-step tools)</label>
+          <div class="seg" id="askMode" data-value="hybrid"><button data-v="hybrid" class="on">Hybrid</button><button data-v="dense">Dense</button><button data-v="bm25">BM25</button></div>
+        </div>
+        <div class="row"><span class="muted">Ctrl + Enter</span><button class="btn primary" id="askBtn">Investigate</button></div>
       </div>
     </div>
-    <div class="card" id="progressCard" hidden><b>Progress</b><div class="log" id="progress"></div></div>
-    <div class="card" id="resultCard" hidden></div>
+    <div class="examples" id="examples"></div>
+
+    <div class="grid">
+      <div id="resultCol">
+        <div class="card empty" id="placeholder">
+          <svg><use href="#i-doc"/></svg>
+          <div>Pick an example or ask your own question.<br>The answer appears here with its sources; the investigation steps appear alongside.</div>
+        </div>
+        <div class="card" id="resultCard" hidden></div>
+      </div>
+      <aside class="card trace" id="progressCard" hidden>
+        <div class="trace-head"><h2 style="margin:0">Investigation</h2><span class="timer" id="timer">0.0 s</span></div>
+        <ul class="steps" id="progress"></ul>
+      </aside>
+    </div>
   </section>
 
-  <!-- Search -->
+  <!-- ================= Search ================= -->
   <section id="search">
     <div class="card">
-      <input type="text" id="query" placeholder="search query">
-      <div class="row">
-        <label>mode <select id="searchMode" style="width:auto"><option>hybrid</option><option>dense</option><option>bm25</option></select></label>
-        <label><input type="checkbox" id="mmr" checked> MMR re-rank</label>
-        <button class="primary" id="searchBtn">Search</button>
+      <div class="searchbar">
+        <input type="text" id="query" placeholder="Search the index directly, e.g. connection pool exhausted">
+        <button class="btn primary" id="searchBtn">Search</button>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div class="seg" id="searchMode" data-value="hybrid"><button data-v="hybrid" class="on">Hybrid (RRF)</button><button data-v="dense">Dense</button><button data-v="bm25">BM25</button></div>
+        <label class="switch"><input type="checkbox" id="mmr" checked><span class="track"></span>MMR diversity re-rank</label>
         <span class="muted" id="searchInfo"></span>
       </div>
     </div>
-    <div id="searchResults"></div>
+    <div id="searchResults" style="margin-top:14px"></div>
   </section>
 
-  <!-- Documents -->
+  <!-- ================= Documents ================= -->
   <section id="docs">
-    <div class="card">
-      <b>Add documents</b> <span class="muted" id="formats"></span>
-      <div class="row"><input type="file" id="files" multiple><button class="primary" id="uploadBtn">Upload</button></div>
-      <div class="muted">Uploading a file with the same name again creates a new version. Dataset documents need an admin token to modify.</div>
-      <div class="row"><input type="text" id="adminToken" placeholder="admin token (optional)" style="max-width:300px"></div>
-      <div id="uploadResult" class="log"></div>
-    </div>
-    <div class="card">
-      <div class="row" style="margin-top:0">
-        <label>corpus <select id="corpus" style="width:auto"><option value="">all</option><option>novapay</option><option>user</option><option>postmortems</option><option>hotpot</option></select></label>
-        <button class="small" id="reloadDocs">reload</button>
+    <div class="docs-grid">
+      <div class="card">
+        <h2>Add documents</h2>
+        <label class="drop" id="drop">
+          <input type="file" id="files" multiple>
+          <svg><use href="#i-upload"/></svg>
+          <div><b>Drop files here</b> or click to choose</div>
+          <div class="muted" id="formats"></div>
+        </label>
+        <div class="files-picked" id="picked"></div>
+        <div class="row" style="margin-top:10px"><button class="btn primary" id="uploadBtn" disabled>Upload</button></div>
+        <div class="results" id="uploadResult"></div>
+        <p class="muted">Uploading a file with the same name creates a new version. Identical content is detected as a duplicate,
+          and similar content is reported as a near-duplicate.</p>
+        <label class="muted" for="adminToken">Admin token (needed to delete dataset documents)</label>
+        <input type="password" id="adminToken" placeholder="optional" autocomplete="off" style="margin-top:4px">
       </div>
-      <table><thead><tr><th>title</th><th>doc id</th><th>type</th><th>chunks</th><th>ver</th><th></th></tr></thead><tbody id="docRows"></tbody></table>
-      <div class="row"><button class="small" id="moreDocs" hidden>more</button></div>
+      <div class="card">
+        <div class="row" style="justify-content:space-between; margin-bottom:10px">
+          <h2 style="margin:0">Indexed documents</h2>
+          <button class="btn sm" id="reloadDocs">Reload</button>
+        </div>
+        <div class="filters seg" id="corpus" data-value="">
+          <button data-v="" class="on">All</button><button data-v="novapay">NovaPay</button><button data-v="user">Uploaded</button>
+          <button data-v="postmortems">Post-mortems</button><button data-v="hotpot">HotpotQA</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Title</th><th class="id">Doc id</th><th>Type</th><th class="num">Chunks</th><th class="num">Ver</th><th></th></tr></thead>
+            <tbody id="docRows"></tbody></table>
+        </div>
+        <div class="row" style="margin-top:10px; justify-content:center"><button class="btn sm" id="moreDocs" hidden>Load more</button></div>
+      </div>
     </div>
   </section>
 </main>
 
-<dialog id="viewer"><div id="viewerBody"></div><div class="row"><button class="small" onclick="viewer.close()">close</button></div></dialog>
+<dialog id="viewer">
+  <div class="dlg-head"><h3 id="viewerTitle"></h3><button class="btn sm" id="viewerClose">Close</button></div>
+  <div class="dlg-body" id="viewerBody"></div>
+</dialog>
+<div id="toast"></div>
 
 <script>
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const chunkStore = {};  // chunk_id -> hit, filled from search events so citations can be shown
+const icon = (name) => `<svg><use href="#i-${name}"/></svg>`;
+const fmt = (n) => Number(n ?? 0).toLocaleString("en-US");
+const chunkStore = {};  // chunk_id -> hit, filled lazily so citations can be shown
 
 async function api(path, opts = {}) {
   const r = await fetch(path, opts);
@@ -115,57 +319,155 @@ async function api(path, opts = {}) {
   return body;
 }
 
+let toastTimer;
+function toast(msg) {
+  $("toast").textContent = msg; $("toast").classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => $("toast").classList.remove("show"), 3500);
+}
+
+// segmented controls keep their value in data-value
+function seg(id, onChange) {
+  const el = $(id);
+  el.querySelectorAll("button").forEach((b) => b.onclick = () => {
+    el.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+    el.dataset.value = b.dataset.v; onChange?.(b.dataset.v);
+  });
+  return () => el.dataset.value;
+}
+const askMode = seg("askMode"), searchMode = seg("searchMode"), corpus = seg("corpus", () => loadDocs(true));
+
 // tabs
 document.querySelectorAll("nav button").forEach((b) => b.onclick = () => {
-  document.querySelectorAll("nav button, section").forEach((e) => e.classList.remove("active"));
+  document.querySelectorAll("nav button, main > section").forEach((e) => e.classList.remove("active"));
   b.classList.add("active"); $(b.dataset.tab).classList.add("active");
   if (b.dataset.tab === "docs" && !$("docRows").children.length) loadDocs(true);
 });
 
 api("/api/stats").then((s) => {
-  $("stats").textContent = `${s.documents} documents · ${s.chunks} chunks · ${s.vector_db} · LLM ${s.llm_model} · embeddings ${s.embed_model}`;
-  $("formats").textContent = `(${s.supported_formats.join(" ")})`;
-}).catch((e) => $("stats").textContent = "stats unavailable: " + e.message);
+  $("stats").innerHTML = [
+    `<b>${fmt(s.documents)}</b> documents`, `<b>${fmt(s.chunks)}</b> chunks`,
+    `<b>${esc(s.vector_db)}</b>`, `LLM <b>${esc(s.llm_model)}</b>`,
+  ].map((x) => `<span class="pill">${x}</span>`).join("");
+  $("formats").textContent = s.supported_formats.join("  ");
+}).catch((e) => $("stats").innerHTML = `<span class="pill">stats unavailable: ${esc(e.message)}</span>`);
 
-function renderChunk(h) {
-  return `<div class="chunk"><h4>${esc(h.title)} <span class="muted">${esc(h.chunk_id)}${h.score ? " · score " + h.score : ""}</span></h4>${esc(h.text)}</div>`;
+// ---------- chunk viewer ----------
+const docIdOf = (cid) => cid.slice(0, cid.lastIndexOf("#"));
+function renderChunk(h, highlight) {
+  return `<div class="chunk${highlight ? " hl" : ""}" id="c-${esc(h.chunk_id)}">
+    <div class="row"><span class="chip" style="cursor:default">${esc(h.chunk_id)}</span>${h.score ? `<span class="muted">score ${h.score}</span>` : ""}</div>
+    <div class="text">${esc(h.text)}</div></div>`;
 }
+function openViewer(title, html) {
+  $("viewerTitle").textContent = title; $("viewerBody").innerHTML = html; $("viewer").showModal();
+}
+$("viewerClose").onclick = () => $("viewer").close();
+$("viewer").onclick = (e) => { if (e.target === $("viewer")) $("viewer").close(); };
 
-async function showChunk(cid) {
-  let h = chunkStore[cid];
-  if (!h) {
-    const docId = cid.slice(0, cid.lastIndexOf("#"));
-    try { (await api("/api/documents/" + encodeURIComponent(docId))).chunks.forEach((c) => chunkStore[c.chunk_id] = c); } catch {}
-    h = chunkStore[cid];
+async function showDocument(docId, focusChunk) {
+  try {
+    const r = await api("/api/documents/" + encodeURIComponent(docId));
+    r.chunks.forEach((c) => chunkStore[c.chunk_id] = c);
+    const meta = Object.entries(r.document.metadata || {}).filter(([, v]) => v !== "" && !(Array.isArray(v) && !v.length))
+      .map(([k, v]) => `${esc(k)}: ${esc(typeof v === "object" ? JSON.stringify(v) : v)}`).join(" · ");
+    openViewer(r.document.title, `<div class="meta">${esc(r.document.doc_id)} · v${r.document.version}${meta ? " · " + meta : ""}</div>`
+      + r.chunks.map((c) => renderChunk(c, c.chunk_id === focusChunk)).join(""));
+    if (focusChunk) document.getElementById("c-" + focusChunk)?.scrollIntoView({block: "center"});
+  } catch (e) { toast(e.message); }
+}
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-chunk]");
+  if (el) showDocument(docIdOf(el.dataset.chunk), el.dataset.chunk);
+});
+
+// ---------- investigate ----------
+const EXAMPLES = [
+  ["Multi-hop", "Which system change caused the payment processing delays in March, which services were affected and which documents confirm it?"],
+  ["Contradiction", "How long did incident INC-0312 last?"],
+  ["Abstain", "Who approved change CHG-2031?"],
+  ["Injection", "How many customer-facing incidents did NovaPay have in March 2026?"],
+  ["Wikipedia", "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?"],
+];
+$("examples").innerHTML = EXAMPLES.map(([k, q], i) => `<button class="example" data-ex="${i}"><b>${esc(k)}</b>${esc(q)}</button>`).join("");
+$("examples").onclick = (e) => {
+  const b = e.target.closest("[data-ex]");
+  if (b) { $("question").value = EXAMPLES[b.dataset.ex][1]; $("question").focus(); }
+};
+$("question").onkeydown = (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) $("askBtn").click(); };
+
+// minimal, safe markdown for answers: escape first, then **bold**, `code`, lists, paragraphs, chunk-id chips
+function inline(s) {
+  return s.replace(/`([^`]+)`/g, "<code>$1</code>")
+          .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+          .replace(/(^|[\s(\[])\*([^*\s][^*]*)\*(?=[\s).,;:!?\]]|$)/g, "$1<em>$2</em>")
+          .replace(/\b([a-z]+:[\w.\-]+#\d+)\b/g, (m) => `<button class="chip" data-chunk="${m}">${m}</button>`);
+}
+function markdown(text) {
+  const out = []; let list = null;
+  const close = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  for (const raw of esc(text).split("\n")) {
+    const line = raw.trimEnd();
+    const ul = /^\s*[-*•]\s+(.*)$/.exec(line), ol = /^\s*\d+[.)]\s+(.*)$/.exec(line);
+    if (ul || ol) {
+      const kind = ul ? "ul" : "ol";
+      if (list !== kind) { close(); out.push(`<${kind}>`); list = kind; }
+      out.push(`<li>${inline((ul || ol)[1])}</li>`);
+    } else if (!line.trim()) { close(); }
+    else { close(); out.push(`<p>${inline(line)}</p>`); }
   }
-  $("viewerBody").innerHTML = h ? renderChunk(h) : `<p>Chunk ${esc(cid)} not found.</p>`;
-  $("viewer").showModal();
+  close();
+  return out.join("");
 }
-document.addEventListener("click", (e) => { if (e.target.dataset.chunk) showChunk(e.target.dataset.chunk); });
-
-// ---------- investigate (SSE over POST) ----------
-function logLine(t) { $("progress").insertAdjacentHTML("beforeend", `<div>${esc(t)}</div>`); $("progress").scrollTop = 1e9; }
 
 function renderResult(r) {
-  const cites = r.citations.map((c) => `<li><span class="cite ${c.valid ? "" : "invalid"}" data-chunk="${esc(c.chunk_id)}">${esc(c.chunk_id)}</span> ${esc(c.title)}${c.quote ? ` — <i>“${esc(c.quote)}”</i>` : ""}${c.valid ? "" : " <span class='muted'>(not in retrieved evidence, discarded)</span>"}</li>`).join("");
-  const contras = r.contradictions.map((c) => `<div class="contra">${esc(c.description)}<br>${c.chunk_ids.map((i) => `<span class="cite" data-chunk="${esc(i)}">${esc(i)}</span>`).join(" ")}</div>`).join("");
+  const statusLabel = {answered: "Answered", insufficient_evidence: "Insufficient evidence", error: "Error"}[r.status] || r.status;
+  const conf = Math.max(0, Math.min(1, r.confidence ?? 0));
+  const tokens = (r.usage?.prompt_tokens ?? 0) + (r.usage?.completion_tokens ?? 0);
+  const contras = r.contradictions.map((c) => `<p>${esc(c.description)}</p><div class="row">${c.chunk_ids.map((i) =>
+    `<button class="chip" data-chunk="${esc(i)}">${esc(i)}</button>`).join("")}</div>`).join("");
+  const sources = r.citations.map((c, i) => `<div class="source ${c.valid ? "" : "invalid"}">
+      <div class="n">${i + 1}</div>
+      <div><div class="row" style="gap:8px"><span class="t">${esc(c.title)}</span><button class="chip ${c.valid ? "" : "invalid"}" data-chunk="${esc(c.chunk_id)}">${esc(c.chunk_id)}</button></div>
+        ${c.quote ? `<q>${esc(c.quote)}</q>` : ""}
+        ${c.valid ? "" : `<div class="muted">Not among the retrieved evidence, so it was discarded.</div>`}</div></div>`).join("");
   $("resultCard").innerHTML = `
-    <span class="badge ${esc(r.status)}">${esc(r.status.replace("_", " "))}</span>
-    <span class="muted">confidence ${(r.confidence ?? 0).toFixed(2)} · ${r.latency_ms} ms · ${r.usage.llm_calls ?? 0} LLM calls · ${(r.usage.prompt_tokens ?? 0) + (r.usage.completion_tokens ?? 0)} tokens</span>
-    <div class="answer">${esc(r.answer)}</div>
-    ${contras ? `<b>Contradictions found</b>${contras}` : ""}
-    ${cites ? `<b>Sources</b><ol>${cites}</ol>` : ""}
-    ${r.sub_questions?.length ? `<details><summary class="muted">plan</summary><ul>${r.sub_questions.map((q) => `<li>${esc(q)}</li>`).join("")}</ul></details>` : ""}`;
-  $("resultCard").hidden = false;
+    <div class="result-head">
+      <span class="status ${esc(r.status)}">${esc(statusLabel)}</span>
+      ${r.status === "error" ? "" : `<span class="meter">confidence <span class="bar-bg"><span class="bar-fg" style="width:${conf * 100}%"></span></span> ${conf.toFixed(2)}</span>`}
+      <span class="metrics"><span>${(r.latency_ms / 1000).toFixed(1)} s</span><span>${r.usage?.llm_calls ?? 0} LLM calls</span><span>${fmt(tokens)} tokens</span></span>
+    </div>
+    <div class="answer">${markdown(r.answer)}</div>
+    ${contras ? `<div class="callout"><h3>${icon("warn")} Sources disagree</h3>${contras}</div>` : ""}
+    ${sources ? `<div class="sources"><h3>Sources (${r.citations.length})</h3>${sources}</div>` : ""}
+    ${r.sub_questions?.length ? `<details class="plan"><summary>Plan: ${r.sub_questions.length} sub-questions</summary><ul>${r.sub_questions.map((q) => `<li>${esc(q)}</li>`).join("")}</ul></details>` : ""}`;
+  $("resultCard").hidden = false; $("placeholder").hidden = true;
 }
 
+function step(kind, what, detail = "", cls = "") {
+  $("progress").insertAdjacentHTML("beforeend",
+    `<li class="step ${cls}"><span class="ico">${icon(kind)}</span><div><div class="what">${esc(what)}</div>${detail ? `<div class="detail">${detail}</div>` : ""}</div></li>`);
+  $("progress").scrollTop = 1e9;
+}
+function toolStep(name, args) {
+  let a = {}; try { a = typeof args === "string" ? JSON.parse(args) : args || {}; } catch {}
+  if (name === "search_documents") step("search", "Follow-up search", `“${esc(a.query ?? "")}”${a.doc_ids?.length ? ` in ${a.doc_ids.length} documents` : ""}`);
+  else if (name === "get_document_context") step("doc", "Reading surrounding context", `<span class="chip" style="cursor:default">${esc(a.chunk_id ?? "")}</span>`);
+  else if (name === "submit_answer") step("check", "Submitting answer", a.status ? esc(String(a.status).replace("_", " ")) : "");
+  else step("tool", name, esc(typeof args === "string" ? args : JSON.stringify(args)));
+}
+
+let timerHandle;
 $("askBtn").onclick = async () => {
   const question = $("question").value.trim();
-  if (question.length < 3) return;
-  $("askBtn").disabled = true; $("progress").innerHTML = ""; $("progressCard").hidden = false; $("resultCard").hidden = true;
+  if (question.length < 3) { $("question").focus(); return; }
+  const btn = $("askBtn"); btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>Investigating`;
+  $("progress").innerHTML = ""; $("progressCard").hidden = false; $("resultCard").hidden = true; $("placeholder").hidden = true;
+  const t0 = performance.now();
+  timerHandle = setInterval(() => $("timer").textContent = ((performance.now() - t0) / 1000).toFixed(1) + " s", 100);
+  let finished = false;
   try {
     const resp = await fetch("/api/ask/stream", {method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({question, agentic: $("agentic").checked, mode: $("askMode").value})});
+      body: JSON.stringify({question, agentic: $("agentic").checked, mode: askMode()})});
     if (!resp.ok) throw new Error((await resp.json().catch(() => ({}))).detail || resp.statusText);
     const reader = resp.body.getReader(), dec = new TextDecoder();
     let buf = "";
@@ -177,30 +479,46 @@ $("askBtn").onclick = async () => {
       while ((i = buf.indexOf("\n\n")) !== -1) {
         const block = buf.slice(0, i); buf = buf.slice(i + 2);
         const ev = /^event: (.*)$/m.exec(block)?.[1], data = JSON.parse(/^data: (.*)$/m.exec(block)?.[1] || "{}");
-        if (ev === "plan") logLine("plan: " + data.sub_questions.join(" | "));
-        else if (ev === "search") { logLine(`search "${data.query}" → ${data.results.length} new chunks`); }
-        else if (ev === "tool_call") logLine(`tool ${data.name} ${data.arguments}`);
-        else if (ev === "answer") { renderResult(data); logLine("done"); }
-        else if (ev === "error") logLine("error: " + data.message);
+        if (ev === "plan") step("plan", `Planned ${data.sub_questions.length} sub-questions`, `<ul>${data.sub_questions.map((q) => `<li>${esc(q)}</li>`).join("")}</ul>`);
+        else if (ev === "search") step("search", `Searched: ${data.results.length} new chunks`, `“${esc(data.query)}”`);
+        else if (ev === "tool_call") toolStep(data.name, data.arguments);
+        else if (ev === "answer") { renderResult(data); finished = true;
+          step(data.status === "error" ? "x" : "check", data.status === "error" ? "Failed" : "Verified citations and answered", "", data.status === "error" ? "err" : "done"); }
+        else if (ev === "error") { step("x", "Error", esc(data.message), "err"); toast(data.message); }
       }
     }
-  } catch (e) { logLine("error: " + e.message); }
-  $("askBtn").disabled = false;
+    if (!finished) step("x", "Stream ended without an answer", "", "err");
+  } catch (e) { step("x", "Error", esc(e.message), "err"); toast(e.message); }
+  clearInterval(timerHandle);
+  btn.disabled = false; btn.textContent = "Investigate";
 };
 
 // ---------- search ----------
 $("searchBtn").onclick = async () => {
   const query = $("query").value.trim();
   if (!query) return;
-  $("searchInfo").textContent = "searching…";
+  $("searchInfo").innerHTML = `<span class="spinner" style="display:inline-block;vertical-align:-2px"></span> searching…`;
   try {
     const r = await api("/api/search", {method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({query, mode: $("searchMode").value, use_mmr: $("mmr").checked, top_k: 10})});
-    $("searchInfo").textContent = `${r.hits.length} hits in ${r.latency_ms} ms`;
-    $("searchResults").innerHTML = r.hits.map((h) => `<div class="card">${renderChunk(h)}<div class="muted">ranks: ${esc(JSON.stringify(h.debug.ranks))}</div></div>`).join("");
+      body: JSON.stringify({query, mode: searchMode(), use_mmr: $("mmr").checked, top_k: 10})});
+    $("searchInfo").textContent = `${r.hits.length} results in ${r.latency_ms} ms`;
+    $("searchResults").innerHTML = r.hits.length ? r.hits.map((h, i) => {
+      h.chunk_id && (chunkStore[h.chunk_id] = h);
+      const ranks = Object.entries(h.debug?.ranks || {}).map(([k, v]) => `<span class="rk">${esc(k)} <b>#${esc(v)}</b></span>`).join("");
+      return `<div class="card hit"><div class="rank">${i + 1}</div><div>
+        <div class="hit-head"><span class="t">${esc(h.title)}</span><span class="tag">${esc(h.metadata?.doc_type || "")}</span>
+          <button class="chip" data-chunk="${esc(h.chunk_id)}">${esc(h.chunk_id)}</button><span class="muted">score ${h.score}</span></div>
+        <div class="text clamp">${esc(h.text)}</div><button class="more" data-more>show more</button>
+        ${ranks ? `<div class="ranks">${ranks}</div>` : ""}</div></div>`;
+    }).join("") : `<div class="card empty">No results.</div>`;
   } catch (e) { $("searchInfo").textContent = e.message; }
 };
 $("query").onkeydown = (e) => { if (e.key === "Enter") $("searchBtn").click(); };
+$("searchResults").onclick = (e) => {
+  if (!e.target.matches("[data-more]")) return;
+  const t = e.target.previousElementSibling, open = t.classList.toggle("clamp");
+  e.target.textContent = open ? "show more" : "show less";
+};
 
 // ---------- documents ----------
 let nextOffset = null;
@@ -208,42 +526,65 @@ async function loadDocs(reset) {
   if (reset) { $("docRows").innerHTML = ""; nextOffset = null; }
   const q = new URLSearchParams({limit: 50});
   if (nextOffset) q.set("offset", nextOffset);
-  if ($("corpus").value) q.set("corpus", $("corpus").value);
-  const r = await api("/api/documents?" + q);
-  nextOffset = r.next_offset; $("moreDocs").hidden = !nextOffset;
-  $("docRows").insertAdjacentHTML("beforeend", r.documents.map((d) => `<tr>
-    <td>${esc(d.title)}</td><td class="muted">${esc(d.doc_id)}</td><td>${esc(d.doc_type)}</td><td>${d.num_chunks}</td><td>${d.version}</td>
-    <td><button class="small" data-view="${esc(d.doc_id)}">view</button> <button class="small" data-del="${esc(d.doc_id)}">delete</button></td></tr>`).join(""));
+  if (corpus()) q.set("corpus", corpus());
+  try {
+    const r = await api("/api/documents?" + q);
+    nextOffset = r.next_offset; $("moreDocs").hidden = !nextOffset;
+    if (reset && !r.documents.length) { $("docRows").innerHTML = `<tr><td colspan="6" class="empty">No documents in this corpus yet.</td></tr>`; return; }
+    $("docRows").insertAdjacentHTML("beforeend", r.documents.map((d) => `<tr>
+      <td>${esc(d.title)}</td><td class="id" title="${esc(d.doc_id)}">${esc(d.doc_id)}</td><td><span class="tag">${esc(d.doc_type)}</span></td>
+      <td class="num">${d.num_chunks}</td><td class="num">${d.version}</td>
+      <td class="actions"><button class="btn sm" data-view="${esc(d.doc_id)}">View</button> <button class="btn sm danger" data-del="${esc(d.doc_id)}">Delete</button></td></tr>`).join(""));
+  } catch (e) { toast(e.message); }
 }
 $("reloadDocs").onclick = () => loadDocs(true);
-$("corpus").onchange = () => loadDocs(true);
 $("moreDocs").onclick = () => loadDocs(false);
 
 $("docRows").onclick = async (e) => {
-  const view = e.target.dataset.view, del = e.target.dataset.del;
-  if (view) {
-    const r = await api("/api/documents/" + encodeURIComponent(view));
-    $("viewerBody").innerHTML = `<h3>${esc(r.document.title)}</h3><div class="muted">${esc(JSON.stringify(r.document.metadata))}</div>` + r.chunks.map(renderChunk).join("");
-    $("viewer").showModal();
-  }
-  if (del && confirm(`Delete ${del}?`)) {
-    try { await api("/api/documents/" + encodeURIComponent(del), {method: "DELETE", headers: {"X-Admin-Token": $("adminToken").value}}); e.target.closest("tr").remove(); }
-    catch (err) { alert(err.message); }
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.dataset.view) showDocument(b.dataset.view);
+  if (b.dataset.del && confirm(`Delete ${b.dataset.del}?`)) {
+    try {
+      await api("/api/documents/" + encodeURIComponent(b.dataset.del), {method: "DELETE", headers: {"X-Admin-Token": $("adminToken").value}});
+      b.closest("tr").remove(); toast("Document deleted");
+    } catch (err) { toast(err.message); }
   }
 };
 
+// upload: click or drag & drop
+let picked = [];
+function setPicked(list) {
+  picked = [...list];
+  $("picked").textContent = picked.length ? picked.map((f) => f.name).join(", ") : "";
+  $("uploadBtn").disabled = !picked.length;
+}
+$("files").onchange = () => setPicked($("files").files);
+["dragenter", "dragover"].forEach((t) => $("drop").addEventListener(t, (e) => { e.preventDefault(); $("drop").classList.add("over"); }));
+["dragleave", "drop"].forEach((t) => $("drop").addEventListener(t, (e) => { e.preventDefault(); $("drop").classList.remove("over"); }));
+$("drop").addEventListener("drop", (e) => setPicked(e.dataTransfer.files));
+
+function describe(x) {
+  const st = x.status || "error";
+  let msg = esc(x.title || x.source || x.doc_id || "");
+  if (st === "created" || st === "updated") msg += ` → <span class="chip" style="cursor:default">${esc(x.doc_id)}</span> v${x.version}, ${x.num_chunks} chunks`;
+  if (st === "duplicate") msg += ` is identical to <span class="chip" style="cursor:default">${esc(x.doc_id)}</span>; not indexed again`;
+  if (x.reason && st !== "duplicate") msg += ` (${esc(x.reason)})`;
+  if (x.near_duplicate_of) msg += `<div class="muted">Near-duplicate of ${esc(x.near_duplicate_of.doc_id)} (Hamming distance ${x.near_duplicate_of.hamming_distance})</div>`;
+  return `<div class="res ${esc(st)}"><span class="st">${esc(st)}</span>${msg}</div>`;
+}
 $("uploadBtn").onclick = async () => {
-  const files = $("files").files;
-  if (!files.length) return;
+  if (!picked.length) return;
   const fd = new FormData();
-  for (const f of files) fd.append("files", f);
-  $("uploadBtn").disabled = true; $("uploadResult").textContent = "uploading…";
+  for (const f of picked) fd.append("files", f);
+  const btn = $("uploadBtn"); btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>Uploading`;
   try {
     const r = await api("/api/documents", {method: "POST", body: fd});
-    $("uploadResult").innerHTML = r.results.map((x) => `<div>${esc(JSON.stringify(x))}</div>`).join("");
+    $("uploadResult").innerHTML = r.results.map(describe).join("");
+    setPicked([]); $("files").value = "";
     loadDocs(true);
-  } catch (e) { $("uploadResult").textContent = e.message; }
-  $("uploadBtn").disabled = false;
+  } catch (e) { $("uploadResult").innerHTML = describe({status: "error", reason: e.message}); }
+  btn.textContent = "Upload"; btn.disabled = !picked.length;
 };
 </script>
 </body>
