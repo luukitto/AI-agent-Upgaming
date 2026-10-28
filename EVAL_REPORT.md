@@ -1,7 +1,7 @@
 # Evaluation Report
 
-> **Status:** methodology and harness are final. The result tables below are filled from
-> `eval/results/*.md` after running the commands in §5. The analysis in §4 must be written from those numbers.
+All numbers below come from `eval/results/*.md|json`, produced by the commands in §5 on the full index
+(55,213 documents, 65,176 chunks) with `gemini-3.5-flash-lite` as both answer model and judge.
 
 ## 1. Question set (`eval/questions.jsonl`, 60 questions)
 
@@ -116,12 +116,74 @@ The production index uses the **sentence** chunker (size 800, overlap 120): whol
 because the quoted chunk reads as a complete statement, and the larger size keeps more incident reports in one or two
 chunks.
 
+### 4.3 End-to-end: single-shot RAG vs agentic RAG
+
+Single-shot ran on all 60 questions. The agentic run was stopped after its first 15 questions (12 simple, 3
+multi-hop) because of the free-tier time budget, so the two configs are compared **paired**, on exactly those 15
+questions. Tables: [`eval/results/e2e_flashlite.md`](eval/results/e2e_flashlite.md); per-question answers, judge
+reasons and traces: `e2e_flashlite.json`. One judge call failed (hp-04, an API-key change mid-run) and is excluded
+from the correctness mean.
+
+**Single-shot, all 60 questions**
+
+| correctness | keyword hit | citation precision | citation validity | abstention acc. | false abstention | R@5 | latency | LLM calls | tokens |
+|---|---|---|---|---|---|---|---|---|---|
+| 0.864 | 0.787 | 0.973 | **1.000** | 0.667 | 0.111 | 0.873 | 18.5 s | 1 | 1,827 |
+
+**Paired, same 15 questions**
+
+| config | correctness | keyword hit | false abstention | R@5 | latency | LLM calls | tokens |
+|---|---|---|---|---|---|---|---|
+| single-shot | 0.833 | 0.867 | 0.133 | 0.867 | 14.7 s | 1 | 1,772 |
+| agentic | **0.967** | **1.000** | **0.000** | **0.900** | 46.3 s | 2.4 | 4,044 |
+
+**What the numbers say**
+
+- **Citations are never fabricated.** Citation validity is 1.0 in both configs: every cited chunk id was really
+  retrieved, partly because the code verifies ids against the evidence log and drops invented ones. Citation
+  precision (cited chunks that are gold) is 0.97–0.98.
+- **Agentic RAG fixes the second hop.** On np-15 ("which team owns the service whose change caused the ledger
+  reconciliation failure?") single-shot retrieved the incident report but not the team directory (R@5 0.5) and
+  abstained (correctness 0). The agent searched again for the owning team, found it (R@5 1.0) and answered
+  correctly. This is exactly the failure class §4.1 identified, and the main reason the agentic config exists.
+- **The cost of that:** ~3× latency (46 s vs 15 s) and ~2.3× tokens per question. With flash-lite prices
+  ($0.30 / $2.50 per 1M input / output tokens) and the measured ~89 % input share, that is about $0.001 per
+  single-shot and $0.002 per agentic question, plus a similar amount for the judge. The UI keeps single-shot available (`agentic` toggle) for simple lookups.
+
+**Where single-shot fails (10 of the 59 judged questions score below 1.0), by cause**
+
+| cause | questions | what happened |
+|---|---|---|
+| **Second hop not retrieved** → false abstention | np-15, hp-02, hp-17 | the bridge document (team directory, Shirley Temple, the conference) is not in the seed results; the model correctly refuses to guess but has no second search. Agentic fixes np-15 |
+| **Retrieved but incomplete answer** | np-16, np-20 | the change is identified but the person (np-16) or the "SLO was violated" conclusion (np-20) is left out, although the evidence was there |
+| **Contradiction not surfaced** | np-13, np-28 | the answer states one side (the incident report) and omits that the Q1 review names CHG-2034. In the contradiction category 3 of 4 were fully surfaced (np-28 half); np-13 is a multi-hop question that also carries the planted conflict |
+| **Answered instead of abstaining** | np-32 (also "who approved CHG-2031?" on the live demo) | the model answers a nearby fact (the Acquira status history, the change *author*) instead of saying the asked fact is missing; abstention accuracy 0.667 |
+| **Retrieval miss on a simple fact** | np-07 (p99 target 800 ms) | the SLO JSON chunk did not rank in the top results for "p99 latency target" |
+| **Reasoning error** | hp-14 | both documents retrieved (R@5 1.0), wrong yes/no conclusion |
+
+**How to improve it**
+
+1. **Run the second hop by default for multi-entity questions**: the agent already has the tool; single-shot
+   could get one automatic follow-up search on entities extracted from the first results (cheap query rewriting).
+2. **Contradiction step**: before `submit_answer`, ask the model explicitly to compare the claims of each cited
+   document on the asked attribute (root cause, duration). Both missed contradictions were in the evidence.
+3. **Stricter abstention**: require that the cited chunk *contains the asked attribute* (approver, cause on a
+   date); a cheap check in the verify step would have caught np-32 and the CHG-2031 approver question.
+4. **Re-ranking**: a cross-encoder over the top 20 would likely fix np-07, where the exact field name is in the
+   chunk but ranks too low.
+5. **A stronger model**: `gemini-3.5-flash` (20 free requests/day) was out of budget; the incomplete-answer and
+   yes/no errors are typical small-model failures and are the cheapest to fix with a larger model.
+
+**Limitations of this evaluation.** The agentic run covers 15 questions (simple and multi-hop only), so its
+numbers are indicative, not final; `python -m eval.run_eval e2e --tag flashlite` resumes it from question 16. The
+judge is the same small model as the generator, so the keyword-hit metric (deterministic) is reported alongside it.
+
 ## 5. Reproduce
 
 ```bash
 python -m eval.make_questions
 python -m eval.run_eval retrieval
 python -m eval.run_eval chunking
-python -m eval.run_eval e2e --sleep 2          # --limit / --categories / --configs for partial runs
+python -m eval.run_eval e2e --sleep 1 --tag flashlite   # resumable; --limit / --categories / --configs for partial runs
 ```
 LLM responses are cached on disk (`data/llm_cache`), so re-runs are free and deterministic.

@@ -159,7 +159,7 @@ is sent in a header (never in URLs or logs), and dataset documents can only be c
 `pytest -q` runs 41 tests offline. They use an in-memory Qdrant, a hashing embedder and a scripted LLM, so the
 real chunkers, dedup, BM25, RRF, MMR, agent loop, citation checks, API routes and eval metrics run without network
 access. They cover parsers for all 7 formats, CRUD and versioning, exact and near duplicates, fabricated-citation
-detection, the step limit, LLM failure handling (no retries on a used-up daily quota, model fallback), compact BM25 compaction, tool argument errors, injection flagging, admin protection and SSE.
+detection, the step limit, LLM failure handling (no retries on a used-up daily quota, model fallback), BM25 index compaction, tool argument errors, injection flagging, admin protection and SSE.
 
 ## 7. Project layout
 
